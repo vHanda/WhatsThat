@@ -11,10 +11,12 @@ include(ECMGenerateHeaders)
 include(ECMPackageConfigHelpers)
 include(ECMSetupVersion)
 include(FeatureSummary)
+include(KDEInstallDirs)
+include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings)
 include(ECMAddTests)
 
-find_package(Qt5 5.5 REQUIRED NO_MODULE COMPONENTS WebEngine WebEngineWidgets Test)
+find_package(Qt5 5.5 REQUIRED NO_MODULE COMPONENTS WebEngine WebEngineWidgets WebChannel Test)
 
 include_directories(
   ${CMAKE_SOURCE_DIR}
@@ -29,5 +31,5 @@ add_definitions(-DQT_NO_KEYWORDS)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
-add_executable(whatsAppTest main.cpp)
-target_link_libraries(whatsAppTest Qt5::WebEngine Qt5::WebEngineWidgets)
+add_executable(whatsAppTest main.cpp testclass.cpp)
+target_link_libraries(whatsAppTest Qt5::WebEngine Qt5::WebEngineWidgets Qt5::WebChannel)

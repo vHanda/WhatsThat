@@ -27,6 +27,22 @@
 #include <QtWebEngineWidgets/QWebEnginePage>
 #include <QtWebEngineWidgets/QWebEngineProfile>
 
+#include <QtWebChannel/QWebChannel>
+
+#include "testclass.h"
+
+class CustomWebPage : public QWebEnginePage {
+public:
+    CustomWebPage(QWebEngineProfile* profile, QObject* parent = 0)
+        : QWebEnginePage(profile, parent)
+    {}
+
+protected:
+    void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString& message, int lineNumber, const QString& sourceID) {
+        qDebug() << "JS:" << lineNumber << message;
+    }
+};
+
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
@@ -41,7 +57,7 @@ int main(int argc, char* argv[])
     profile.setPersistentStoragePath(dataPath + "/storage");
     profile.setPersistentCookiesPolicy(QWebEngineProfile::ForcePersistentCookies);
 
-    QWebEnginePage page(&profile);
+    CustomWebPage page(&profile);
 
     QWebEngineView view;
     view.setPage(&page);
@@ -50,6 +66,30 @@ int main(int argc, char* argv[])
 
     QObject::connect(&view, &QWebEngineView::loadFinished, [&](bool) {
         qDebug() << "Loaded";
+
+        {
+            QFile file(":/qtwebchannel/qwebchannel.js");
+            file.open(QIODevice::ReadOnly);
+            QString contents = QString::fromUtf8(file.readAll());
+
+            page.runJavaScript(contents);
+        }
+        {
+            QFile file("webChan.js");
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
+            QString contents = QString::fromUtf8(file.readAll());
+
+            qDebug() << "Running" << contents;
+            page.runJavaScript(contents);
+        }
     });
+
+
+    QWebChannel* chan = new QWebChannel();
+    page.setWebChannel(chan);
+
+    TestClass test;
+    chan->registerObject("testObj", &test);
+
     return app.exec();
 }
