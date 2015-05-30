@@ -20,6 +20,8 @@
  */
 
 #include <QApplication>
+#include <QStandardPaths>
+#include <QDir>
 
 #include <QtWebEngineWidgets/QWebEngineView>
 #include <QtWebEngineWidgets/QWebEnginePage>
@@ -29,8 +31,15 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
+    QString dataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + QStringLiteral("/kde-whatsapp");
+    QDir().mkpath(dataPath);
+
     QWebEngineProfile profile;
     profile.setHttpUserAgent("Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2224.3 Safari/537.36");
+    profile.setCachePath(dataPath + "/cache");
+    profile.setHttpCacheType(QWebEngineProfile::DiskHttpCache);
+    profile.setPersistentStoragePath(dataPath + "/storage");
+    profile.setPersistentCookiesPolicy(QWebEngineProfile::ForcePersistentCookies);
 
     QWebEnginePage page(&profile);
 
