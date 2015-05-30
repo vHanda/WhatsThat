@@ -14,7 +14,7 @@ include(FeatureSummary)
 include(KDEFrameworkCompilerSettings)
 include(ECMAddTests)
 
-find_package(Qt5 REQUIRED NO_MODULE COMPONENTS WebEngine WebEngineWidgets Test)
+find_package(Qt5 5.5 REQUIRED NO_MODULE COMPONENTS WebEngine WebEngineWidgets Test)
 
 include_directories(
   ${CMAKE_SOURCE_DIR}

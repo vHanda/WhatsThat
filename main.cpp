@@ -23,25 +23,19 @@
 
 #include <QtWebEngineWidgets/QWebEngineView>
 #include <QtWebEngineWidgets/QWebEnginePage>
-
-/*
-class UserAgentWebPage : public QWebPage
-{
-public:
-    explicit UserAgentWebPage(QObject* parent = 0) : QWebPage(parent) {}
-private:
-    QString userAgentForUrl(const QUrl &url) const {
-        qDebug() << url;
-        return QLatin1String("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
-    }
-};
-*/
+#include <QtWebEngineWidgets/QWebEngineProfile>
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
+    QWebEngineProfile profile;
+    profile.setHttpUserAgent("Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2224.3 Safari/537.36");
+
+    QWebEnginePage page(&profile);
+
     QWebEngineView view;
+    view.setPage(&page);
     view.load(QUrl("https://web.whatsapp.com"));
     view.show();
 
