@@ -14,7 +14,7 @@ include(FeatureSummary)
 include(KDEFrameworkCompilerSettings)
 include(ECMAddTests)
 
-find_package(Qt5 REQUIRED NO_MODULE COMPONENTS WebKit WebKitWidgets Test)
+find_package(Qt5 REQUIRED NO_MODULE COMPONENTS WebEngine WebEngineWidgets Test)
 
 include_directories(
   ${CMAKE_SOURCE_DIR}
@@ -30,4 +30,4 @@ remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
 add_executable(whatsAppTest main.cpp)
-target_link_libraries(whatsAppTest Qt5::WebKit Qt5::WebKitWidgets)
+target_link_libraries(whatsAppTest Qt5::WebEngine Qt5::WebEngineWidgets)

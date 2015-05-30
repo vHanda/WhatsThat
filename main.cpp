@@ -21,10 +21,10 @@
 
 #include <QApplication>
 
-#include <QtWebKitWidgets/QWebView>
-#include <QtWebKitWidgets/QWebFrame>
-#include <QtWebKitWidgets/QWebPage>
+#include <QtWebEngineWidgets/QWebEngineView>
+#include <QtWebEngineWidgets/QWebEnginePage>
 
+/*
 class UserAgentWebPage : public QWebPage
 {
 public:
@@ -35,17 +35,17 @@ private:
         return QLatin1String("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
     }
 };
+*/
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    QWebView view;
-    view.setPage(new UserAgentWebPage(&view));
+    QWebEngineView view;
     view.load(QUrl("https://web.whatsapp.com"));
     view.show();
 
-    QObject::connect(&view, &QWebView::loadFinished, [&](bool) {
+    QObject::connect(&view, &QWebEngineView::loadFinished, [&](bool) {
         qDebug() << "Loaded";
     });
     return app.exec();
