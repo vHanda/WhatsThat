@@ -41,6 +41,8 @@ Q_SIGNALS:
     void showContactListInvoked();
     void hideContactListInvoked();
 
+    void contactListChanged();
+
 public Q_SLOTS:
     void showContactListCallback();
     void hideContactListCallback();

@@ -31,5 +31,4 @@ add_definitions(-DQT_NO_KEYWORDS)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
-add_executable(whatsAppTest main.cpp whatsappjsinterface.cpp)
-target_link_libraries(whatsAppTest Qt5::WebEngine Qt5::WebEngineWidgets Qt5::WebChannel)
+add_subdirectory(src)
