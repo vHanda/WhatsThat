@@ -40,3 +40,96 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
     console.log(foo.MyEnum.MyEnumerator);
     */
 });
+
+
+// FIXME: Does not work!
+function sendMessage(message) {
+    // We need to simulate the input, and not just set the text!
+    var input = $(".input-container > .input");
+    input.textContent = message;
+
+    // This send button does not exist, as it only appears on a keyboard event
+    // on the input box
+    var sendButton = $("button.icon.btn-icon.icon-send.send-container");
+    sendButton.click();
+}
+
+function contactList() {
+    var names = [];
+    var nameElements = $(".chat > .chat-body > .chat-main > .chat-title");
+    for (var i = 0; i < nameElements.length; i++) {
+        var elem = nameElements[i];
+        var name = elem.getAttribute("title");
+        if (name)
+            names.push(name);
+    }
+
+    return names;
+}
+
+function showContactList(callBack) {
+    var button = $("button.icon.icon-chat");
+    button.click();
+
+    var leftDrawer = $("body > div > div.app.two > div:nth-child(2) > span:nth-child(1)").first();
+    // Better CSS selector: div.app.two > div[data-reactid] > span[data-reactid*='1.1']
+    leftDrawer.on("DOMNodeInsert", callBack);
+}
+
+function hideContactList(callBack) {
+    var button = $("button.icon.btn-close-drawer");
+    button.click();
+
+    var leftDrawer = $("body > div > div.app.two > div:nth-child(2) > span:nth-child(1)").first();
+    leftDrawer.on("DOMNodeRemoved", callBack);
+}
+
+//
+// Messages
+//
+
+function fetchMessages() {
+    var messages = [];
+    var msgElemens = $(".msg");
+    for (var i = 0; i < msgElemens.length; i++) {
+        var msgElem = msgElemens[i];
+
+        var mtext = $("div.message-text", msgElem).text();
+        if (mtext)
+            messages.push(mtext);
+    }
+
+    return messages;
+}
+
+
+//
+// Active Chats
+//
+function activeChats() {
+    var chats = [];
+
+    var chatElems = $(".chat");
+    for (var i = 0; i < chatElems.length; i++) {
+        var chatElem = chatElems[i];
+
+        var chatObj = {};
+        chatObj.title = $("div.chat-title", chatElem).text();
+        chatObj.id = chatElem.getAttribute("data-reactid");
+
+        var imgElem = $("img.avatar-image", chatElem);
+        if (imgElem.length)
+            chatObj.avatar = imgElem.attr("src");
+
+        chats.push(chatObj);
+    }
+
+    return chats;
+}
+
+function selectChat(chatId) {
+    var chat = $("[data-reactid='" + chatId + "']");
+    chat.click();
+}
+
+
