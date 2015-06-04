@@ -1,5 +1,4 @@
 /*
- * <one line to give the library's name and an idea of what it does.>
  * Copyright (C) 2015  Vishesh Handa <vhanda@kde.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -18,21 +17,36 @@
  *
  */
 
-#include "testclass.h"
+#ifndef WHATSAPPWEBJSINTERFACE_H
+#define WHATSAPPWEBJSINTERFACE_H
 
-#include <QDebug>
+#include <QObject>
+#include <QVariant>
 
-TestClass::TestClass(QObject* parent)
-    : QObject(parent)
+// Maybe some of the things can be made into properties?
+// Such as - contact list, conversation list
+//
+class WhatsAppJsInterface : public QObject
 {
-}
+    Q_OBJECT
+    Q_PROPERTY(QVariantList contactList READ contactList NOTIFY contactListChanged)
+public:
+    explicit WhatsAppJsInterface(QObject* parent = 0);
 
-TestClass::~TestClass()
-{
+    QVariantList contactList() const {
+        return m_contactList;
+    }
 
-}
+Q_SIGNALS:
+    void showContactListInvoked();
+    void hideContactListInvoked();
 
-void TestClass::fire()
-{
-    qDebug() << "Let there be fire";
-}
+public Q_SLOTS:
+    void showContactListCallback();
+    void hideContactListCallback();
+
+private:
+    QVariantList m_contactList;
+};
+
+#endif // WHATSAPPWEBINTERFACE_H

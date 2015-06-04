@@ -29,7 +29,7 @@
 
 #include <QtWebChannel/QWebChannel>
 
-#include "testclass.h"
+#include "whatsappjsinterface.h"
 
 class CustomWebPage : public QWebEnginePage {
 public:
@@ -74,6 +74,8 @@ int main(int argc, char* argv[])
 
             page.runJavaScript(contents);
         }
+
+        // FIXME: We need to load jQuery as well!
         {
             QFile file("webChan.js");
             file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -88,8 +90,13 @@ int main(int argc, char* argv[])
     QWebChannel* chan = new QWebChannel();
     page.setWebChannel(chan);
 
-    TestClass test;
-    chan->registerObject("testObj", &test);
+    WhatsAppJsInterface interface;
+    chan->registerObject("whatsAppInterface", &interface);
+
+    // We shouldn't need to have to call 'emit' in order to interact with the interface
+    // there probably should be a wrapper on top of this that converts it into a nice C++
+    // interface
+    emit interface.showContactListInvoked();
 
     return app.exec();
 }

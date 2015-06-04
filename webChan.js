@@ -3,8 +3,15 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
 
     console.log("EEEEE");
 
-    var testObj = channel.objects.testObj;
-    testObj.fire();
+    var whatsAppInterface = channel.objects.whatsAppInterface;
+
+    connect(whatsAppInterface.showContactListInvoked.connect(function() {
+        showContactList(whatsAppInterface.showContactListCallback);
+    }));
+
+    connect(whatsAppInterface.hideContactListInvoked.connect(function() {
+        showContactList(whatsAppInterface.hideContactListCallback);
+    }));
 
     /*
     // Connect to a signal:

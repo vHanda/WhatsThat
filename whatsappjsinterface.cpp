@@ -1,5 +1,4 @@
 /*
- * <one line to give the library's name and an idea of what it does.>
  * Copyright (C) 2015  Vishesh Handa <vhanda@kde.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -18,20 +17,19 @@
  *
  */
 
-#ifndef TESTCLASS_H
-#define TESTCLASS_H
+#include "whatsappjsinterface.h"
+#include <QDebug>
 
-#include <QObject>
-
-class TestClass : public QObject
+WhatsAppJsInterface::WhatsAppJsInterface(QObject* parent)
 {
-    Q_OBJECT
-public:
-    explicit TestClass(QObject* parent = 0);
-    ~TestClass();
+}
 
-public Q_SLOTS:
-    void fire();
-};
+void WhatsAppJsInterface::showContactListCallback()
+{
+    qDebug();
+}
 
-#endif // TESTCLASS_H
+void WhatsAppJsInterface::hideContactListCallback()
+{
+    qDebug();
+}
