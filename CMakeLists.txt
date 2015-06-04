@@ -20,6 +20,7 @@ find_package(Qt5 5.5 REQUIRED NO_MODULE COMPONENTS WebEngine WebEngineWidgets We
 
 include_directories(
   ${CMAKE_SOURCE_DIR}
+  ${CMAKE_SOURCE_DIR}/3rdParty/linenoise/src/
 )
 
 feature_summary(WHAT ALL
@@ -31,4 +32,5 @@ add_definitions(-DQT_NO_KEYWORDS)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
+add_subdirectory(3rdParty)
 add_subdirectory(src)

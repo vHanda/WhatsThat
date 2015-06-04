@@ -22,6 +22,8 @@
 #include <QApplication>
 #include <QStandardPaths>
 #include <QDir>
+#include <QTimer>
+#include <QThread>
 
 #include <QtWebEngineWidgets/QWebEngineView>
 #include <QtWebEngineWidgets/QWebEnginePage>
@@ -30,6 +32,7 @@
 #include <QtWebChannel/QWebChannel>
 
 #include "whatsappjsinterface.h"
+#include "console.h"
 
 class CustomWebPage : public QWebEnginePage {
 public:
@@ -90,7 +93,14 @@ int main(int argc, char* argv[])
     // We shouldn't need to have to call 'emit' in order to interact with the interface
     // there probably should be a wrapper on top of this that converts it into a nice C++
     // interface
-    Q_EMIT interface.showContactListInvoked();
+
+    QThread thread;
+    thread.start();
+
+    Console console(&interface);
+    console.moveToThread(&thread);
+
+    QTimer::singleShot(0, &console, SLOT(startLoop()));
 
     return app.exec();
 }
