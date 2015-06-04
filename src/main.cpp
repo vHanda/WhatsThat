@@ -37,9 +37,17 @@ public:
         : QWebEnginePage(profile, parent)
     {}
 
+    void runJavaScriptFile(const QString& path) {
+        QFile file(path);
+        file.open(QIODevice::ReadOnly);
+        Q_ASSERT(file.isOpen());
+        QString contents = QString::fromUtf8(file.readAll());
+
+        runJavaScript(contents);
+    }
 protected:
     void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString& message, int lineNumber, const QString& sourceID) {
-        qDebug() << "JS:" << lineNumber << message;
+        qDebug() << "JS:" << sourceID << lineNumber << message;
     }
 };
 
@@ -67,23 +75,9 @@ int main(int argc, char* argv[])
     QObject::connect(&view, &QWebEngineView::loadFinished, [&](bool) {
         qDebug() << "Loaded";
 
-        {
-            QFile file(":/qtwebchannel/qwebchannel.js");
-            file.open(QIODevice::ReadOnly);
-            QString contents = QString::fromUtf8(file.readAll());
-
-            page.runJavaScript(contents);
-        }
-
-        // FIXME: We need to load jQuery as well!
-        {
-            QFile file("webChan.js");
-            file.open(QIODevice::ReadOnly | QIODevice::Text);
-            QString contents = QString::fromUtf8(file.readAll());
-
-            qDebug() << "Running" << contents;
-            page.runJavaScript(contents);
-        }
+        page.runJavaScriptFile(":/qtwebchannel/qwebchannel.js");
+        page.runJavaScriptFile(QStandardPaths::locate(QStandardPaths::GenericDataLocation, "whatsapptest/jquery.js"));
+        page.runJavaScriptFile(QStandardPaths::locate(QStandardPaths::GenericDataLocation, "whatsapptest/webChan.js"));
     });
 
 

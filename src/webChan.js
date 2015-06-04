@@ -5,13 +5,13 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
 
     var whatsAppInterface = channel.objects.whatsAppInterface;
 
-    connect(whatsAppInterface.showContactListInvoked.connect(function() {
+    whatsAppInterface.showContactListInvoked.connect(function() {
         showContactList(whatsAppInterface.showContactListCallback);
-    }));
+    });
 
-    connect(whatsAppInterface.hideContactListInvoked.connect(function() {
+    whatsAppInterface.hideContactListInvoked.connect(function() {
         showContactList(whatsAppInterface.hideContactListCallback);
-    }));
+    });
 
     /*
     // Connect to a signal:
