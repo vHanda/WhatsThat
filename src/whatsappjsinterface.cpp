@@ -45,3 +45,24 @@ void WhatsAppJsInterface::setCurrentChat(const QString& chatId)
     Q_EMIT currentChatChanged();
 }
 
+QVariant WhatsAppJsInterface::chatList() const
+{
+    return m_chatList;
+}
+
+QVariant WhatsAppJsInterface::messageList() const
+{
+    return m_messageList;
+}
+
+void WhatsAppJsInterface::setChatList(const QVariant& var)
+{
+    m_chatList = var;
+    Q_EMIT chatListChanged();
+}
+
+void WhatsAppJsInterface::setMessageList(const QVariant& var)
+{
+    m_messageList = var;
+    Q_EMIT messageListChanged();
+}

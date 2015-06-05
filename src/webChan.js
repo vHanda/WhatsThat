@@ -18,6 +18,15 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
         whatsAppInterface.chatList = chats;
     });
 
+    whatsAppInterface.currentChatChanged.connect(function() {
+        selectChat(whatsAppInterface.currentChat)
+    });
+
+    whatsAppInterface.populateMessageList.connect(function() {
+        var msgs = fetchMessages();
+        whatsAppInterface.messageList = msgs;
+    });
+
     /*
     // To make the object known globally, assign it to the window object, i.e.:
     window.foo = channel.objects.foo;
@@ -97,12 +106,27 @@ function hideContactList(callBack) {
 function fetchMessages() {
     var messages = [];
     var msgElemens = $(".msg");
+
+    var re = new RegExp("\\[([^,]*), (.*)\\]([^:]*):(.*)");
     for (var i = 0; i < msgElemens.length; i++) {
         var msgElem = msgElemens[i];
 
         var mtext = $("div.message-text", msgElem).text();
-        if (mtext)
-            messages.push(mtext);
+        if (mtext) {
+            var match = re.exec(mtext);
+
+            if (!match) {
+                console.log(match);
+                continue;
+            }
+            var message = {};
+            message.date = match[1];
+            message.time = match[2];
+            message.author = match[3];
+            message.text = match[4];
+
+            messages.push(message);
+        }
     }
 
     return messages;

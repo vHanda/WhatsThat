@@ -45,6 +45,22 @@ Console::Console(WhatsAppJsInterface* interface, QObject* parent)
             stream << "[" << i << "] " << title << "\n";
         }
     });
+
+    connect(m_interface, &WhatsAppJsInterface::messageListChanged, [&]() {
+        QVariantList list = m_interface->messageList().toList();
+
+        QTextStream stream(stdout);
+        for (int i = 0; i < list.size(); i++) {
+            QVariantMap map = list[i].toMap();
+
+            const QString date = map.value("date").toString();
+            const QString time = map.value("time").toString();
+            const QString author = map.value("author").toString();
+            const QString text = map.value("text").toString();
+
+            stream << "[" << date << " " << time << "] " << author << ": " << text << "\n";
+        }
+    });
 }
 
 void Console::startLoop()
@@ -77,6 +93,9 @@ void Console::startLoop()
 
             QString id = map.value("id").toString();
             QMetaObject::invokeMethod(m_interface, "setCurrentChat", Qt::QueuedConnection, Q_ARG(QString, id));
+        }
+        else if (input == "messageList") {
+            QMetaObject::invokeMethod(m_interface, "populateMessageList", Qt::QueuedConnection);
         }
         else {
             qDebug() << "Unknown command";
