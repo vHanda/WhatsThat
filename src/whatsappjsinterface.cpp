@@ -33,3 +33,15 @@ void WhatsAppJsInterface::hideContactListCallback()
 {
     qDebug();
 }
+
+QString WhatsAppJsInterface::currentChat() const
+{
+    return m_currentChat;
+}
+
+void WhatsAppJsInterface::setCurrentChat(const QString& chatId)
+{
+    m_currentChat = chatId;
+    Q_EMIT currentChatChanged();
+}
+

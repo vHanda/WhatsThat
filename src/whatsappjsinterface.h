@@ -22,15 +22,15 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QDebug>
 
-// Maybe some of the things can be made into properties?
-// Such as - contact list, conversation list
-//
 class WhatsAppJsInterface : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QVariantList contactList READ contactList NOTIFY contactListChanged)
+
     Q_PROPERTY(QVariant chatList READ chatList WRITE setChatList NOTIFY chatListChanged)
+    Q_PROPERTY(QString currentChat READ currentChat WRITE setCurrentChat NOTIFY currentChatChanged)
 public:
     explicit WhatsAppJsInterface(QObject* parent = 0);
 
@@ -47,6 +47,8 @@ public:
         Q_EMIT chatListChanged();
     }
 
+    QString currentChat() const;
+
 Q_SIGNALS:
     void showContactListInvoked();
     void hideContactListInvoked();
@@ -54,14 +56,19 @@ Q_SIGNALS:
 
     void contactListChanged();
     void chatListChanged();
+    void currentChatChanged();
 
 public Q_SLOTS:
     void showContactListCallback();
     void hideContactListCallback();
 
+    void setCurrentChat(const QString& chatId);
+
 private:
     QVariantList m_contactList;
+
     QVariant m_chatList;
+    QString m_currentChat;
 };
 
 #endif // WHATSAPPWEBINTERFACE_H

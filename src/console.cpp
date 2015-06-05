@@ -71,6 +71,16 @@ void Console::startLoop()
         else if (input == "chatList") {
             QMetaObject::invokeMethod(m_interface, "populateChatList", Qt::QueuedConnection);
         }
+        else if (input.startsWith("chat")) {
+            int index = input.mid(5).simplified().toInt();
+            QVariantMap map = m_interface->chatList().toList()[index].toMap();
+
+            QString id = map.value("id").toString();
+            QMetaObject::invokeMethod(m_interface, "setCurrentChat", Qt::QueuedConnection, Q_ARG(QString, id));
+        }
+        else {
+            qDebug() << "Unknown command";
+        }
     }
 }
 
