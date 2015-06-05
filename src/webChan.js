@@ -13,13 +13,12 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
         showContactList(whatsAppInterface.hideContactListCallback);
     });
 
-    /*
-    // Connect to a signal:
-    channel.objects.foo.mySignal.connect(function() {
-        // This callback will be invoked whenever the signal is emitted on the C++/QML side.
-        console.log(arguments);
+    whatsAppInterface.populateChatList.connect(function() {
+        var chats = activeChats();
+        whatsAppInterface.chatList = chats;
     });
 
+    /*
     // To make the object known globally, assign it to the window object, i.e.:
     window.foo = channel.objects.foo;
 

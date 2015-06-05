@@ -27,10 +27,24 @@ extern "C" {
 #include <QDebug>
 #include <QByteArray>
 
+#include <iostream>
+#include <stdio.h>
+
 Console::Console(WhatsAppJsInterface* interface, QObject* parent)
     : QObject(parent)
     , m_interface(interface)
 {
+    connect(m_interface, &WhatsAppJsInterface::chatListChanged, [&]() {
+        QVariantList list = m_interface->chatList().toList();
+
+        QTextStream stream(stdout);
+        for (int i = 0; i < list.size(); i++) {
+            QVariantMap map = list[i].toMap();
+
+            const QString title = map.value("title").toString();
+            stream << "[" << i << "] " << title << "\n";
+        }
+    });
 }
 
 void Console::startLoop()
@@ -45,7 +59,6 @@ void Console::startLoop()
             continue;
 
         linenoiseHistoryAdd(input.constData());
-        qDebug() << "D" << input;
 
         if (input == "showContactList") {
             qDebug() << "SHOW CONTACT LIST";
@@ -53,6 +66,10 @@ void Console::startLoop()
         }
         else if (input == "hideContactList") {
             qDebug() << "HIDE CONTACT LIST";
+            QMetaObject::invokeMethod(m_interface, "hideContactListInvoked", Qt::QueuedConnection);
+        }
+        else if (input == "chatList") {
+            QMetaObject::invokeMethod(m_interface, "populateChatList", Qt::QueuedConnection);
         }
     }
 }

@@ -30,6 +30,7 @@ class WhatsAppJsInterface : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QVariantList contactList READ contactList NOTIFY contactListChanged)
+    Q_PROPERTY(QVariant chatList READ chatList WRITE setChatList NOTIFY chatListChanged)
 public:
     explicit WhatsAppJsInterface(QObject* parent = 0);
 
@@ -37,11 +38,22 @@ public:
         return m_contactList;
     }
 
+    QVariant chatList() const {
+        return m_chatList;
+    }
+
+    void setChatList(const QVariant& var) {
+        m_chatList = var;
+        Q_EMIT chatListChanged();
+    }
+
 Q_SIGNALS:
     void showContactListInvoked();
     void hideContactListInvoked();
+    void populateChatList();
 
     void contactListChanged();
+    void chatListChanged();
 
 public Q_SLOTS:
     void showContactListCallback();
@@ -49,6 +61,7 @@ public Q_SLOTS:
 
 private:
     QVariantList m_contactList;
+    QVariant m_chatList;
 };
 
 #endif // WHATSAPPWEBINTERFACE_H
