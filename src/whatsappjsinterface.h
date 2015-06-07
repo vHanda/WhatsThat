@@ -58,11 +58,15 @@ Q_SIGNALS:
     void currentChatChanged();
     void messageListChanged();
 
+    void loaded();
+
 public Q_SLOTS:
     void showContactListCallback();
     void hideContactListCallback();
 
     void setCurrentChat(const QString& chatId);
+
+    void emitLoaded();
 
 private:
     QVariantList m_contactList;

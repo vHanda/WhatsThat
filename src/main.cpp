@@ -76,8 +76,6 @@ int main(int argc, char* argv[])
     view.show();
 
     QObject::connect(&view, &QWebEngineView::loadFinished, [&](bool) {
-        qDebug() << "Loaded";
-
         page.runJavaScriptFile(":/qtwebchannel/qwebchannel.js");
         page.runJavaScriptFile(QStandardPaths::locate(QStandardPaths::GenericDataLocation, "whatsapptest/jquery.js"));
         page.runJavaScriptFile(QStandardPaths::locate(QStandardPaths::GenericDataLocation, "whatsapptest/webChan.js"));

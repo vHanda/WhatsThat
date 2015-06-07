@@ -66,3 +66,8 @@ void WhatsAppJsInterface::setMessageList(const QVariant& var)
     m_messageList = var;
     Q_EMIT messageListChanged();
 }
+
+void WhatsAppJsInterface::emitLoaded()
+{
+    Q_EMIT loaded();
+}

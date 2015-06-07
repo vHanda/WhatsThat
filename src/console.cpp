@@ -61,6 +61,10 @@ Console::Console(WhatsAppJsInterface* interface, QObject* parent)
             stream << "[" << date << " " << time << "] " << author << ": " << text << "\n";
         }
     });
+
+    connect(m_interface, &WhatsAppJsInterface::loaded, [&]() {
+        qDebug() << "LOADED";
+    });
 }
 
 void Console::startLoop()

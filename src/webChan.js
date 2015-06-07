@@ -1,8 +1,5 @@
 
 new QWebChannel(qt.webChannelTransport, function(channel) {
-
-    console.log("EEEEE");
-
     var whatsAppInterface = channel.objects.whatsAppInterface;
 
     whatsAppInterface.showContactListInvoked.connect(function() {
@@ -27,33 +24,9 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
         whatsAppInterface.messageList = msgs;
     });
 
-    /*
-    // To make the object known globally, assign it to the window object, i.e.:
-    window.foo = channel.objects.foo;
-
-    // Invoke a method:
-    foo.myMethod(arg1, arg2, function(returnValue) {
-        // This callback will be invoked when myMethod has a return value. Keep in mind that
-        // the communication is asynchronous, hence the need for this callback.
-        console.log(returnValue);
+    onLoad(function() {
+        whatsAppInterface.emitLoaded();
     });
-
-    // Read a property value, which is cached on the client side:
-    console.log(foo.myProperty);
-
-    // Writing a property will instantly update the client side cache.
-    // The remote end will be notified about the change asynchronously
-    foo.myProperty = "Hello World!";
-
-    // To get notified about remote property changes,
-    // simply connect to the corresponding notify signal:
-    foo.onMyPropertyChanged.connect(function(newValue) {
-        console.log(newValue);
-    });
-
-    // One can also access enums that are marked with Q_ENUM:
-    console.log(foo.MyEnum.MyEnumerator);
-    */
 });
 
 
@@ -162,4 +135,38 @@ function selectChat(chatId) {
     chat.click();
 }
 
+//
+// Loading
+//
 
+function onLoad(callBack) {
+    var app = $(".app-wrapper");
+    app.on("DOMNodeInserted", function() {
+        var main = $(".app-wrapper-main");
+        if (main.length > 0) {
+            var centralImage = $("div.intro-image");
+            if (centralImage.length > 0) {
+                callBack();
+            }
+            return;
+        }
+
+        var loadingSpinner = $("#startup > .spinner-container");
+        if (loadingSpinner.length > 0) {
+            return;
+        }
+
+        // FIXME: Call a seperate callback if failed to load
+        var popupError = $(".popup-container");
+        if (popupError.length > 0) {
+            return;
+        }
+
+        return;
+    });
+
+    // app-wrapper app-wrapper-main
+
+    // Monitor app-wraper
+    // contains "#startup"
+}
