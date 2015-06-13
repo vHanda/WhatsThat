@@ -17,62 +17,62 @@
  *
  */
 
-#include "whatsappjsinterface.h"
+#include "jsinterface.h"
 #include <QDebug>
 
-WhatsAppJsInterface::WhatsAppJsInterface(QObject* parent)
+JsInterface::JsInterface(QObject* parent)
 {
 }
 
-void WhatsAppJsInterface::showContactListCallback()
-{
-    qDebug();
-}
-
-void WhatsAppJsInterface::hideContactListCallback()
+void JsInterface::showContactListCallback()
 {
     qDebug();
 }
 
-QString WhatsAppJsInterface::currentChat() const
+void JsInterface::hideContactListCallback()
+{
+    qDebug();
+}
+
+QString JsInterface::currentChat() const
 {
     return m_currentChat;
 }
 
-void WhatsAppJsInterface::setCurrentChat(const QString& chatId)
+void JsInterface::setCurrentChat(const QString& chatId)
 {
     m_currentChat = chatId;
     Q_EMIT currentChatChanged();
 }
 
-QVariant WhatsAppJsInterface::chatList() const
+QVariant JsInterface::chatList() const
 {
     return m_chatList;
 }
 
-QVariant WhatsAppJsInterface::messageList() const
+QVariant JsInterface::messageList() const
 {
     return m_messageList;
 }
 
-void WhatsAppJsInterface::setChatList(const QVariant& var)
+void JsInterface::setChatList(const QVariant& var)
 {
     m_chatList = var;
     Q_EMIT chatListChanged();
 }
 
-void WhatsAppJsInterface::setMessageList(const QVariant& var)
+void JsInterface::setMessageList(const QVariant& var)
 {
     m_messageList = var;
     Q_EMIT messageListChanged();
 }
 
-void WhatsAppJsInterface::emitLoaded()
+void JsInterface::emitLoaded()
 {
     Q_EMIT loaded();
 }
 
-void WhatsAppJsInterface::jsInjectKeyboardEvent()
+void JsInterface::jsInjectKeyboardEvent()
 {
     Q_EMIT nativeInjectKeyboardEvent();
     Q_EMIT keyboardEventInjected();

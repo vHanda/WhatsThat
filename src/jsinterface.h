@@ -24,7 +24,7 @@
 #include <QVariant>
 #include <QDebug>
 
-class WhatsAppJsInterface : public QObject
+class JsInterface : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QVariantList contactList READ contactList NOTIFY contactListChanged)
@@ -34,7 +34,7 @@ class WhatsAppJsInterface : public QObject
 
     Q_PROPERTY(QVariant messageList READ messageList WRITE setMessageList NOTIFY messageListChanged)
 public:
-    explicit WhatsAppJsInterface(QObject* parent = 0);
+    explicit JsInterface(QObject* parent = 0);
 
     QVariantList contactList() const {
         return m_contactList;

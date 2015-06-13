@@ -18,7 +18,7 @@
  */
 
 #include "interface.h"
-#include "whatsappjsinterface.h"
+#include "jsinterface.h"
 
 #include <QGuiApplication>
 #include <QStandardPaths>
@@ -31,8 +31,6 @@
 #include <QtWebEngineWidgets/QWebEngineProfile>
 
 #include <QtWebChannel/QWebChannel>
-
-#include "whatsappjsinterface.h"
 
 using namespace WhatsThat;
 
@@ -61,7 +59,7 @@ public:
 
     QWebEngineView* m_view;
     CustomWebPage* m_page;
-    WhatsAppJsInterface* m_jsInterface;
+    JsInterface* m_jsInterface;
 };
 
 WhatsThat::Interface::Interface(QObject* parent)
@@ -90,13 +88,13 @@ WhatsThat::Interface::Interface(QObject* parent)
         d->m_page->runJavaScriptFile(QStandardPaths::locate(QStandardPaths::GenericDataLocation, "whatsthat/webChan.js"));
     });
 
-    d->m_jsInterface = new WhatsAppJsInterface(this);
+    d->m_jsInterface = new JsInterface(this);
 
     QWebChannel* chan = new QWebChannel();
     d->m_page->setWebChannel(chan);
 
     chan->registerObject("whatsAppInterface", d->m_jsInterface);
-    connect(d->m_jsInterface, &WhatsAppJsInterface::nativeInjectKeyboardEvent, [&]() {
+    connect(d->m_jsInterface, &JsInterface::nativeInjectKeyboardEvent, [&]() {
         QWindow* window = d->m_view->windowHandle();
         {
             QKeyEvent* event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
@@ -117,7 +115,7 @@ WhatsThat::Interface::Interface(QObject* parent)
     });
 
     // FIXME: This emits too many signals!
-    connect(d->m_jsInterface, &WhatsAppJsInterface::loaded, this, &Interface::loaded);
+    connect(d->m_jsInterface, &JsInterface::loaded, this, &Interface::loaded);
 }
 
 WhatsThat::Interface::~Interface()

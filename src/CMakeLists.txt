@@ -4,7 +4,7 @@ set(WHATSTHAT_LIB_SRCS
     chat.cpp
     sendmessagejob.cpp
 
-    whatsappjsinterface.cpp
+    jsinterface.cpp
 )
 
 add_library(WhatsThat ${WHATSTHAT_LIB_SRCS})
