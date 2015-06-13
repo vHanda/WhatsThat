@@ -19,7 +19,7 @@
  *
  */
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QThread>
 #include <QTimer>
 
@@ -30,7 +30,7 @@
 
 int main(int argc, char* argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
     QThread thread;
     thread.start();

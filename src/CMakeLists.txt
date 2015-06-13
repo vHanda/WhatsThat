@@ -12,7 +12,7 @@ generate_export_header(WhatsThat BASE_NAME WHATSTHAT EXPORT_FILE_NAME whatsthat_
 
 target_link_libraries(WhatsThat
 PUBLIC
-    Qt5::Gui
+    Qt5::Widgets
 PRIVATE
     Qt5::WebEngine
     Qt5::WebEngineWidgets
@@ -45,4 +45,5 @@ install(FILES
     COMPONENT Devel
 )
 
+install(TARGETS WhatsThat DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(FILES webChan.js jquery.js DESTINATION ${DATA_INSTALL_DIR}/whatsthat)
