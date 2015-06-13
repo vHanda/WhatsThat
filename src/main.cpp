@@ -52,7 +52,7 @@ public:
     }
 protected:
     void javaScriptConsoleMessage(JavaScriptConsoleMessageLevel level, const QString& message, int lineNumber, const QString& sourceID) {
-        qDebug() << "JS:" << sourceID << lineNumber << message;
+        qDebug() << "JS Error:" << sourceID << lineNumber << message << "\r";
     }
 };
 

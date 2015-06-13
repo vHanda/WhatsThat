@@ -42,7 +42,7 @@ Console::Console(WhatsAppJsInterface* interface, QObject* parent)
             QVariantMap map = list[i].toMap();
 
             const QString title = map.value("title").toString();
-            stream << "[" << i << "] " << title << "\n";
+            stream << "[" << i << "] " << title << "\r\n";
         }
     });
 
@@ -58,12 +58,12 @@ Console::Console(WhatsAppJsInterface* interface, QObject* parent)
             const QString author = map.value("author").toString();
             const QString text = map.value("text").toString();
 
-            stream << "[" << date << " " << time << "] " << author << ": " << text << "\n";
+            stream << "[" << date << " " << time << "] " << author << ": " << text << "\r\n";
         }
     });
 
     connect(m_interface, &WhatsAppJsInterface::loaded, [&]() {
-        qDebug() << "LOADED";
+        qDebug() << "LOADED\r";
     });
 }
 
@@ -81,11 +81,9 @@ void Console::startLoop()
         linenoiseHistoryAdd(input.constData());
 
         if (input == "showContactList") {
-            qDebug() << "SHOW CONTACT LIST";
             QMetaObject::invokeMethod(m_interface, "showContactListInvoked", Qt::QueuedConnection);
         }
         else if (input == "hideContactList") {
-            qDebug() << "HIDE CONTACT LIST";
             QMetaObject::invokeMethod(m_interface, "hideContactListInvoked", Qt::QueuedConnection);
         }
         else if (input == "chatList") {
@@ -107,7 +105,7 @@ void Console::startLoop()
             QMetaObject::invokeMethod(m_interface, "sendMessage", Qt::QueuedConnection, Q_ARG(QString, message));
         }
         else {
-            qDebug() << "Unknown command";
+            qDebug() << "Unknown command\r";
         }
     }
 }
