@@ -25,23 +25,31 @@
 
 namespace WhatsThat {
 
+class JsInterface;
+class Chat;
+
 class WHATSTHAT_EXPORT SendMessageJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit SendMessageJob(QObject* parent = 0);
     ~SendMessageJob();
 
 Q_SIGNALS:
     // deletes itself after done
     void done();
 
+private Q_SLOTS:
+    void slotMessageListChanged();
+
 private:
+    SendMessageJob(JsInterface* jsInterface, const QString& id, const QString& message, QObject* parent = 0);
     SendMessageJob(const SendMessageJob& rhs) = delete;
     SendMessageJob& operator=(const SendMessageJob& rhs) = delete;
 
     class Private;
     Private* d;
+
+    friend class Chat;
 };
 
 }

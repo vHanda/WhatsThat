@@ -18,23 +18,41 @@
  */
 
 #include "sendmessagejob.h"
+#include "jsinterface.h"
+
+#include <QTimer>
 
 using namespace WhatsThat;
 
 class SendMessageJob::Private {
 public:
-
+    QString m_message;
+    JsInterface* m_jsInterface;
 };
 
-SendMessageJob::SendMessageJob(QObject* parent)
+SendMessageJob::SendMessageJob(JsInterface* jsInterface, const QString& id, const QString& message, QObject* parent)
     : QObject(parent)
     , d(new Private)
 {
+    d->m_jsInterface = jsInterface;
 
+    QMetaObject::invokeMethod(d->m_jsInterface, "setCurrentChat", Qt::QueuedConnection, Q_ARG(QString, id));
+    // FIXME: We Need to know when it has loaded?
+
+    QMetaObject::invokeMethod(d->m_jsInterface, "sendMessage", Qt::QueuedConnection, Q_ARG(QString, id));
+
+    // FIXME: Monitor the messageList changed signal?
+    QTimer::singleShot(1000, this, SLOT(slotMessageListChanged()));
 }
 
 SendMessageJob::~SendMessageJob()
 {
     delete d;
+}
+
+void SendMessageJob::slotMessageListChanged()
+{
+    Q_EMIT done();
+    deleteLater();
 }
 

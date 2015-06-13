@@ -1,6 +1,6 @@
 set(TOOL_SRCS
     main.cpp
-#    console.cpp
+    console.cpp
 )
 
 add_executable(whatsthat ${TOOL_SRCS})

@@ -22,19 +22,22 @@
 
 #include <QObject>
 
-class WhatsAppJsInterface;
+#include "interface.h"
+#include "chatlistjob.h"
+#include "sendmessagejob.h"
+#include "chat.h"
 
 class Console : public QObject
 {
     Q_OBJECT
 public:
-    Console(WhatsAppJsInterface* interface, QObject* parent = 0);
+    Console(WhatsThat::Interface* interface, QObject* parent = 0);
 
 public Q_SLOTS:
     void startLoop();
 
 private:
-    WhatsAppJsInterface* m_interface;
+    WhatsThat::Interface* m_interface;
 };
 
 #endif // CONSOLE_H

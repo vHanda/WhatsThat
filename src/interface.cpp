@@ -19,6 +19,7 @@
 
 #include "interface.h"
 #include "jsinterface.h"
+#include "chatlistjob.h"
 
 #include <QGuiApplication>
 #include <QStandardPaths>
@@ -126,5 +127,5 @@ WhatsThat::Interface::~Interface()
 
 ChatListJob* Interface::generateChatList()
 {
-    return 0;
+    return new ChatListJob(d->m_jsInterface, this);
 }

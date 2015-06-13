@@ -20,7 +20,10 @@
 #include "jsinterface.h"
 #include <QDebug>
 
+using namespace WhatsThat;
+
 JsInterface::JsInterface(QObject* parent)
+    : QObject(parent)
 {
 }
 

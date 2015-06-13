@@ -24,6 +24,8 @@
 #include <QVariant>
 #include <QDebug>
 
+namespace WhatsThat {
+
 class JsInterface : public QObject
 {
     Q_OBJECT
@@ -83,5 +85,7 @@ private:
     QString m_currentChat;
     QVariant m_messageList;
 };
+
+}
 
 #endif // WHATSAPPWEBINTERFACE_H

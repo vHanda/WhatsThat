@@ -18,18 +18,25 @@
  */
 
 #include "chat.h"
+#include "jsinterface.h"
+#include "sendmessagejob.h"
 
 using namespace WhatsThat;
 
 class Chat::Private {
 public:
-
+    JsInterface* m_jsInterface;
+    QString m_title;
+    QString m_id;
 };
 
-Chat::Chat(QObject* parent)
+Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id, QObject* parent)
     : QObject(parent)
     , d(new Private)
 {
+    d->m_jsInterface = jsInterface;
+    d->m_title = title;
+    d->m_id = id;
 }
 
 Chat::~Chat()
@@ -37,8 +44,13 @@ Chat::~Chat()
     delete d;
 }
 
+QString Chat::title() const
+{
+    return d->m_title;
+}
+
 SendMessageJob* Chat::sendMessage(const QString& message)
 {
-    return 0;
+    return new SendMessageJob(d->m_jsInterface, d->m_id, message, this);
 }
 

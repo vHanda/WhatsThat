@@ -1,5 +1,4 @@
 /*
- * <one line to give the library's name and an idea of what it does.>
  * Copyright (C) 2015  Vishesh Handa <vhanda@kde.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,18 +18,28 @@
  */
 
 #include "chatlistjob.h"
+#include "chat.h"
+
+#include "jsinterface.h"
+
+#include <QMetaObject>
 
 using namespace WhatsThat;
 
 class ChatListJob::Private {
 public:
+    JsInterface* m_jsInterface;
     QList<Chat*> m_chatList;
 };
 
-ChatListJob::ChatListJob(QObject* parent)
+ChatListJob::ChatListJob(JsInterface* jsInterface, QObject* parent)
     : QObject(parent)
     , d(new Private)
 {
+    d->m_jsInterface = jsInterface;
+    connect(d->m_jsInterface, &JsInterface::chatListChanged, this, &ChatListJob::slotChatListChanged);
+
+    QMetaObject::invokeMethod(d->m_jsInterface, "populateChatList", Qt::QueuedConnection);
 }
 
 ChatListJob::~ChatListJob()
@@ -43,3 +52,21 @@ QList<Chat*> ChatListJob::chatList() const
     return d->m_chatList;
 }
 
+void ChatListJob::slotChatListChanged()
+{
+    Q_ASSERT(d->m_chatList.isEmpty());
+
+    QVariantList list = d->m_jsInterface->chatList().toList();
+    for (int i = 0; i < list.size(); i++) {
+        QVariantMap map = list[i].toMap();
+
+        QString title = map.value("title").toString();
+        QString id = map.value("id").toString();
+
+        Chat* chat = new Chat(d->m_jsInterface, title, id);
+        d->m_chatList << chat;
+    }
+
+    Q_EMIT done();
+    deleteLater();
+}

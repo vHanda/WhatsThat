@@ -18,7 +18,6 @@
  */
 
 #include "console.h"
-#include "whatsappjsinterface.h"
 
 extern "C" {
     #include "linenoise.h"
@@ -30,10 +29,11 @@ extern "C" {
 #include <iostream>
 #include <stdio.h>
 
-Console::Console(WhatsAppJsInterface* interface, QObject* parent)
+Console::Console(WhatsThat::Interface* interface, QObject* parent)
     : QObject(parent)
     , m_interface(interface)
 {
+    /*
     connect(m_interface, &WhatsAppJsInterface::chatListChanged, [&]() {
         QVariantList list = m_interface->chatList().toList();
 
@@ -65,6 +65,7 @@ Console::Console(WhatsAppJsInterface* interface, QObject* parent)
     connect(m_interface, &WhatsAppJsInterface::loaded, [&]() {
         qDebug() << "LOADED\r";
     });
+    */
 }
 
 void Console::startLoop()
@@ -72,6 +73,7 @@ void Console::startLoop()
     char* line = 0;
 
     while ((line = ::linenoise("> ")) != 0) {
+        /*
         QByteArray input(line);
         free(line);
 
@@ -107,6 +109,7 @@ void Console::startLoop()
         else {
             qDebug() << "Unknown command\r";
         }
+        */
     }
 }
 

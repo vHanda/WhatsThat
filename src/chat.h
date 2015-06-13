@@ -26,14 +26,17 @@
 
 namespace WhatsThat {
 
+class ChatListJob;
 class SendMessageJob;
+class JsInterface;
 
 class WHATSTHAT_EXPORT Chat : public QObject
 {
     Q_OBJECT
 public:
-    explicit Chat(QObject* parent = 0);
     ~Chat();
+
+    QString title() const;
 
     SendMessageJob* sendMessage(const QString& message);
 
@@ -43,11 +46,14 @@ Q_SIGNALS:
     void messageReceived(const QString& senderId, const QDateTime& dt, const QString& message);
 
 private:
+    Chat(JsInterface* jsInterface, const QString& title, const QString& id, QObject* parent = 0);
     Chat(const Chat& rhs) = delete;
     Chat& operator=(const Chat& rhs) = delete;
 
     class Private;
     Private* d;
+
+    friend class ChatListJob;
 };
 }
 

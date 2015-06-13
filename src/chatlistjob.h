@@ -1,5 +1,4 @@
 /*
- * <one line to give the library's name and an idea of what it does.>
  * Copyright (C) 2015  Vishesh Handa <vhanda@kde.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -27,12 +26,13 @@
 namespace WhatsThat {
 
 class Chat;
+class Interface;
+class JsInterface;
 
 class WHATSTHAT_EXPORT ChatListJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit ChatListJob(QObject* parent = 0);
     ~ChatListJob();
 
     QList<Chat*> chatList() const;
@@ -40,12 +40,18 @@ public:
 Q_SIGNALS:
     void done();
 
+private Q_SLOTS:
+    void slotChatListChanged();
+
 private:
+    ChatListJob(JsInterface* jsInterface, QObject* parent = 0);
     ChatListJob(const ChatListJob& rhs) = delete;
     ChatListJob& operator=(const ChatListJob& rhs) = delete;
 
     class Private;
     Private* d;
+
+    friend class Interface;
 };
 }
 

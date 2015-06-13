@@ -26,7 +26,7 @@
 // FIXME: Fix include directory path
 #include "interface.h"
 
-//#include "console.h"
+#include "console.h"
 
 int main(int argc, char* argv[])
 {
@@ -35,10 +35,12 @@ int main(int argc, char* argv[])
     QThread thread;
     thread.start();
 
-    //Console console(&interface);
-    //console.moveToThread(&thread);
+    WhatsThat::Interface interface;
 
-    //QTimer::singleShot(0, &console, SLOT(startLoop()));
+    Console console(&interface);
+    console.moveToThread(&thread);
+
+    QObject::connect(&interface, SIGNAL(loaded()), &console, SLOT(startLoop()));
 
     return app.exec();
 }
