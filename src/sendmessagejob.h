@@ -20,11 +20,12 @@
 #ifndef WHATSTHAT_SENDMESSAGEJOB_H
 #define WHATSTHAT_SENDMESSAGEJOB_H
 
+#include "whatsthat_export.h"
 #include <QObject>
 
 namespace WhatsThat {
 
-class SendMessageJob : public QObject
+class WHATSTHAT_EXPORT SendMessageJob : public QObject
 {
     Q_OBJECT
 public:

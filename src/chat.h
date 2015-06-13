@@ -20,6 +20,7 @@
 #ifndef WHATSTHAT_CHAT_H
 #define WHATSTHAT_CHAT_H
 
+#include "whatsthat_export.h"
 #include <QObject>
 #include <QDateTime>
 
@@ -27,7 +28,7 @@ namespace WhatsThat {
 
 class SendMessageJob;
 
-class Chat : public QObject
+class WHATSTHAT_EXPORT Chat : public QObject
 {
     Q_OBJECT
 public:

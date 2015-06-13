@@ -20,13 +20,15 @@
 #ifndef KDE_WHATSTHAT_INTERFACE_H
 #define KDE_WHATSTHAT_INTERFACE_H
 
+#include "whatsthat_export.h"
 #include <QObject>
+#include <QUrl>
 
 namespace WhatsThat {
 
 class ChatListJob;
 
-class Interface : public QObject
+class WHATSTHAT_EXPORT Interface : public QObject
 {
     Q_OBJECT
 public:
@@ -34,6 +36,11 @@ public:
     ~Interface();
 
     ChatListJob* generateChatList();
+
+Q_SIGNALS:
+    void loaded();
+    void authentiationRequired(const QUrl& imgUrl);
+    void authenticated();
 
 private:
     Interface(const Interface& rhs) = delete;

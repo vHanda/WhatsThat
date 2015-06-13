@@ -21,13 +21,14 @@
 #ifndef WHATSTHAT_CHATLISTJOB_H
 #define WHATSTHAT_CHATLISTJOB_H
 
+#include "whatsthat_export.h"
 #include <QObject>
 
 namespace WhatsThat {
 
 class Chat;
 
-class ChatListJob : public QObject
+class WHATSTHAT_EXPORT ChatListJob : public QObject
 {
     Q_OBJECT
 public:

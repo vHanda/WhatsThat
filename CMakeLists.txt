@@ -34,3 +34,4 @@ remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
 add_subdirectory(3rdParty)
 add_subdirectory(src)
+add_subdirectory(tool)
