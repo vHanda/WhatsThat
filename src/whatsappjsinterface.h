@@ -60,6 +60,11 @@ Q_SIGNALS:
 
     void loaded();
 
+    // Sending messages
+    void setMessage(const QString& message);
+    void injectKeyboardEvent();
+    void clickSend();
+
 public Q_SLOTS:
     void showContactListCallback();
     void hideContactListCallback();

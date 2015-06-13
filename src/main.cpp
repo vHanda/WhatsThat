@@ -24,6 +24,8 @@
 #include <QDir>
 #include <QTimer>
 #include <QThread>
+#include <QKeyEvent>
+#include <QWindow>
 
 #include <QtWebEngineWidgets/QWebEngineView>
 #include <QtWebEngineWidgets/QWebEnginePage>
@@ -87,6 +89,29 @@ int main(int argc, char* argv[])
 
     WhatsAppJsInterface interface;
     chan->registerObject("whatsAppInterface", &interface);
+
+    QObject::connect(&interface, &WhatsAppJsInterface::injectKeyboardEvent, [&]() {
+        {
+            QKeyEvent* event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
+            QWindow* window = view.windowHandle();
+            QGuiApplication::sendEvent(window, event);
+        }
+        {
+            QKeyEvent* event = new QKeyEvent(QEvent::KeyRelease, Qt::Key_Space, Qt::NoModifier, " ");
+            QWindow* window = view.windowHandle();
+            QGuiApplication::sendEvent(window, event);
+        }
+        {
+            QKeyEvent* event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Backspace, Qt::NoModifier, "");
+            QWindow* window = view.windowHandle();
+            QGuiApplication::sendEvent(window, event);
+        }
+        {
+            QKeyEvent* event = new QKeyEvent(QEvent::KeyRelease, Qt::Key_Backspace, Qt::NoModifier, "");
+            QWindow* window = view.windowHandle();
+            QGuiApplication::sendEvent(window, event);
+        }
+    });
 
     // We shouldn't need to have to call 'emit' in order to interact with the interface
     // there probably should be a wrapper on top of this that converts it into a nice C++

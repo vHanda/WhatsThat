@@ -27,17 +27,24 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
     onLoad(function() {
         whatsAppInterface.emitLoaded();
     });
+
+    whatsAppInterface.setMessage.connect(function(msg){
+        setMessage(msg)
+        console.log("Boo");
+    });
+    whatsAppInterface.clickSend.connect(function(){
+        clickSend();
+        console.log("Boo Click");
+    });
 });
 
 
-// FIXME: Does not work!
-function sendMessage(message) {
-    // We need to simulate the input, and not just set the text!
+function setMessage(message) {
     var input = $(".input-container > .input");
-    input.textContent = message;
+    input.append(message);
+}
 
-    // This send button does not exist, as it only appears on a keyboard event
-    // on the input box
+function clickSend() {
     var sendButton = $("button.icon.btn-icon.icon-send.send-container");
     sendButton.click();
 }

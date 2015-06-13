@@ -101,6 +101,13 @@ void Console::startLoop()
         else if (input == "messageList") {
             QMetaObject::invokeMethod(m_interface, "populateMessageList", Qt::QueuedConnection);
         }
+        else if (input.startsWith("send")) {
+            QString message = input.mid(5).trimmed();
+
+            QMetaObject::invokeMethod(m_interface, "setMessage", Qt::QueuedConnection, Q_ARG(QString, message));
+            QMetaObject::invokeMethod(m_interface, "injectKeyboardEvent", Qt::QueuedConnection);
+            QMetaObject::invokeMethod(m_interface, "clickSend", Qt::QueuedConnection);
+        }
         else {
             qDebug() << "Unknown command";
         }
