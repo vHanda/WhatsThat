@@ -2,6 +2,12 @@ add_executable(whatsAppTest
     main.cpp
     whatsappjsinterface.cpp
     console.cpp
+
+    # Library
+    interface.cpp
+    chatlistjob.cpp
+    chat.cpp
+    sendmessagejob.cpp
 )
 
 target_link_libraries(whatsAppTest
