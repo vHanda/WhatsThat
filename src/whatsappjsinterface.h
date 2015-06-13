@@ -61,9 +61,10 @@ Q_SIGNALS:
     void loaded();
 
     // Sending messages
-    void setMessage(const QString& message);
-    void injectKeyboardEvent();
-    void clickSend();
+    void sendMessage(const QString& message);
+    void keyboardEventInjected();
+
+    void nativeInjectKeyboardEvent();
 
 public Q_SLOTS:
     void showContactListCallback();
@@ -72,6 +73,8 @@ public Q_SLOTS:
     void setCurrentChat(const QString& chatId);
 
     void emitLoaded();
+
+    void jsInjectKeyboardEvent();
 
 private:
     QVariantList m_contactList;

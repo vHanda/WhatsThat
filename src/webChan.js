@@ -28,13 +28,12 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
         whatsAppInterface.emitLoaded();
     });
 
-    whatsAppInterface.setMessage.connect(function(msg){
-        setMessage(msg)
-        console.log("Boo");
-    });
-    whatsAppInterface.clickSend.connect(function(){
-        clickSend();
-        console.log("Boo Click");
+    whatsAppInterface.sendMessage.connect(function(msg){
+        setMessage(msg);
+        whatsAppInterface.keyboardEventInjected.connect(function(){
+            clickSend();
+        });
+        whatsAppInterface.jsInjectKeyboardEvent();
     });
 });
 
@@ -46,6 +45,10 @@ function setMessage(message) {
 
 function clickSend() {
     var sendButton = $("button.icon.btn-icon.icon-send.send-container");
+    if (sendButton.length == 0) {
+        setTimeout(clickSend, 100);
+        return;
+    }
     sendButton.click();
 }
 

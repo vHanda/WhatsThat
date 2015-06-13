@@ -71,3 +71,9 @@ void WhatsAppJsInterface::emitLoaded()
 {
     Q_EMIT loaded();
 }
+
+void WhatsAppJsInterface::jsInjectKeyboardEvent()
+{
+    Q_EMIT nativeInjectKeyboardEvent();
+    Q_EMIT keyboardEventInjected();
+}

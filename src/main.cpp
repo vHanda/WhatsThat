@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
     WhatsAppJsInterface interface;
     chan->registerObject("whatsAppInterface", &interface);
 
-    QObject::connect(&interface, &WhatsAppJsInterface::injectKeyboardEvent, [&]() {
+    QObject::connect(&interface, &WhatsAppJsInterface::nativeInjectKeyboardEvent, [&]() {
         {
             QKeyEvent* event = new QKeyEvent(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier, " ");
             QWindow* window = view.windowHandle();
