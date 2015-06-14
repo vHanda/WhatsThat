@@ -24,9 +24,7 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
         whatsAppInterface.messageList = msgs;
     });
 
-    onLoad(function() {
-        whatsAppInterface.emitLoaded();
-    });
+    onLoad(whatsAppInterface.emitLoaded, whatsAppInterface.emitAuthRequired);
 
     whatsAppInterface.sendMessage.connect(function(msg){
         setMessage(msg);
@@ -149,7 +147,7 @@ function selectChat(chatId) {
 // Loading
 //
 
-function onLoad(callBack) {
+function onLoad(callBack, authCallBack){
     var app = $(".app-wrapper");
     app.on("DOMNodeInserted", function() {
         var main = $(".app-wrapper-main");
@@ -163,6 +161,30 @@ function onLoad(callBack) {
 
         var loadingSpinner = $("#startup > .spinner-container");
         if (loadingSpinner.length > 0) {
+            // FIXME: This is just for loading
+            return;
+        }
+
+        var qrcode = $("div.qrcode");
+        if (qrcode.length > 0) {
+            var img = $("img", qrcode);
+            if (img.length) {
+                var src = img.attr("src");
+                if (src && src.length) {
+                    authCallBack(src);
+                } else {
+                    setTimeout(function() {
+                        var src = img.attr("src");
+                        if (src && src.length) {
+                            authCallBack(src);
+                            return;
+                        }
+                        // FIXME: what now?
+                    }, 100);
+                }
+                return;
+            }
+
             return;
         }
 

@@ -117,6 +117,7 @@ WhatsThat::Interface::Interface(QObject* parent)
 
     // FIXME: This emits too many signals!
     connect(d->m_jsInterface, &JsInterface::loaded, this, &Interface::loaded);
+    connect(d->m_jsInterface, &JsInterface::authRequired, this, &Interface::authRequired);
 }
 
 WhatsThat::Interface::~Interface()

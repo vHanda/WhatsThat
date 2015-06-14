@@ -80,3 +80,9 @@ void JsInterface::jsInjectKeyboardEvent()
     Q_EMIT nativeInjectKeyboardEvent();
     Q_EMIT keyboardEventInjected();
 }
+
+void JsInterface::emitAuthRequired(const QString& imgSrc)
+{
+    Q_EMIT authRequired(imgSrc);
+}
+

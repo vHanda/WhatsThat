@@ -24,7 +24,7 @@
 #include <QTimer>
 
 // FIXME: Fix include directory path
-#include "interface.h"
+#include <whatsthat/Interface>
 
 #include "console.h"
 
@@ -40,7 +40,8 @@ int main(int argc, char* argv[])
     Console console(&interface);
     console.moveToThread(&thread);
 
-    QObject::connect(&interface, SIGNAL(loaded()), &console, SLOT(startLoop()));
+    QTimer::singleShot(0, &console, SLOT(startLoop()));
+    //QObject::connect(&interface, SIGNAL(loaded()), &console, SLOT(startLoop()));
 
     return app.exec();
 }

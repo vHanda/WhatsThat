@@ -22,7 +22,7 @@
 
 #include "whatsthat_export.h"
 #include <QObject>
-#include <QUrl>
+#include <QString>
 
 namespace WhatsThat {
 
@@ -39,8 +39,7 @@ public:
 
 Q_SIGNALS:
     void loaded();
-    void authentiationRequired(const QUrl& imgUrl);
-    void authenticated();
+    void authRequired(const QString& imgUrl);
 
 private:
     Interface(const Interface& rhs) = delete;

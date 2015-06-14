@@ -33,6 +33,16 @@ Console::Console(WhatsThat::Interface* interface, QObject* parent)
     : QObject(parent)
     , m_interface(interface)
 {
+    using namespace WhatsThat;
+    connect(interface, &Interface::loaded, [&]() {
+        QTextStream stream(stdout);
+        stream << "Loaded\r\n";
+    });
+    connect(interface, &Interface::authRequired, [&](const QString& img) {
+        QTextStream stream(stdout);
+        stream << "Needs Auth: " << img << "\r\n";
+    });
+
     /*
     connect(m_interface, &WhatsAppJsInterface::chatListChanged, [&]() {
         QVariantList list = m_interface->chatList().toList();
@@ -61,10 +71,6 @@ Console::Console(WhatsThat::Interface* interface, QObject* parent)
             stream << "[" << date << " " << time << "] " << author << ": " << text << "\r\n";
         }
     });
-
-    connect(m_interface, &WhatsAppJsInterface::loaded, [&]() {
-        qDebug() << "LOADED\r";
-    });
     */
 }
 
@@ -73,7 +79,6 @@ void Console::startLoop()
     char* line = 0;
 
     while ((line = ::linenoise("> ")) != 0) {
-        /*
         QByteArray input(line);
         free(line);
 
@@ -82,6 +87,7 @@ void Console::startLoop()
 
         linenoiseHistoryAdd(input.constData());
 
+        /*
         if (input == "showContactList") {
             QMetaObject::invokeMethod(m_interface, "showContactListInvoked", Qt::QueuedConnection);
         }

@@ -50,23 +50,24 @@ public:
     void setMessageList(const QVariant& var);
 
 Q_SIGNALS:
+    // Call by us to do stuff in JS
     void showContactListInvoked();
     void hideContactListInvoked();
     void populateChatList();
     void populateMessageList();
 
+    void sendMessage(const QString& message);
+    void keyboardEventInjected();
+
+    // Called by JS to inform us
+    void loaded();
+    void authRequired(const QString& imgSrc);
+    void nativeInjectKeyboardEvent();
+
     void contactListChanged();
     void chatListChanged();
     void currentChatChanged();
     void messageListChanged();
-
-    void loaded();
-
-    // Sending messages
-    void sendMessage(const QString& message);
-    void keyboardEventInjected();
-
-    void nativeInjectKeyboardEvent();
 
 public Q_SLOTS:
     void showContactListCallback();
@@ -75,6 +76,7 @@ public Q_SLOTS:
     void setCurrentChat(const QString& chatId);
 
     void emitLoaded();
+    void emitAuthRequired(const QString& imgSrc);
 
     void jsInjectKeyboardEvent();
 
