@@ -25,6 +25,7 @@ extern "C" {
 
 #include <QDebug>
 #include <QByteArray>
+#include <QCoreApplication>
 
 #include <iostream>
 #include <stdio.h>
@@ -94,6 +95,10 @@ void Console::startLoop()
         if (input == "hide") {
             QMetaObject::invokeMethod(m_interface, "hide", Qt::QueuedConnection);
             continue;
+        }
+        if (input == "quit") {
+            QMetaObject::invokeMethod(QCoreApplication::instance(), "quit", Qt::QueuedConnection);
+            return;
         }
 
         /*
