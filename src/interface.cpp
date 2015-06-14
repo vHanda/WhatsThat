@@ -81,7 +81,6 @@ WhatsThat::Interface::Interface(QObject* parent)
     d->m_view = new QWebEngineView();
     d->m_view->setPage(d->m_page);
     d->m_view->load(QUrl("https://web.whatsapp.com"));
-    d->m_view->show();
 
     connect(d->m_view, &QWebEngineView::loadFinished, [&](bool) {
         d->m_page->runJavaScriptFile(":/qtwebchannel/qwebchannel.js");
@@ -129,4 +128,14 @@ WhatsThat::Interface::~Interface()
 ChatListJob* Interface::generateChatList()
 {
     return new ChatListJob(d->m_jsInterface, this);
+}
+
+void Interface::show()
+{
+    d->m_view->show();
+}
+
+void Interface::hide()
+{
+    d->m_view->hide();
 }

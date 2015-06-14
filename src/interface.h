@@ -37,6 +37,10 @@ public:
 
     ChatListJob* generateChatList();
 
+public Q_SLOTS:
+    void show();
+    void hide();
+
 Q_SIGNALS:
     void loaded();
     void authRequired(const QString& imgUrl);

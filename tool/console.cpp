@@ -87,6 +87,15 @@ void Console::startLoop()
 
         linenoiseHistoryAdd(input.constData());
 
+        if (input == "show") {
+            QMetaObject::invokeMethod(m_interface, "show", Qt::QueuedConnection);
+            continue;
+        }
+        if (input == "hide") {
+            QMetaObject::invokeMethod(m_interface, "hide", Qt::QueuedConnection);
+            continue;
+        }
+
         /*
         if (input == "showContactList") {
             QMetaObject::invokeMethod(m_interface, "showContactListInvoked", Qt::QueuedConnection);
