@@ -36,7 +36,7 @@ public:
 
 Q_SIGNALS:
     // deletes itself after done
-    void done();
+    void done(SendMessageJob* job);
 
 private Q_SLOTS:
     void slotMessageListChanged();

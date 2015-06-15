@@ -124,6 +124,21 @@ void Console::handleCommand(const QByteArray& input)
         });
         return;
     }
+
+    if (input.startsWith("send")) {
+        QString str = QString::fromUtf8(input.mid(5));
+        QTextStream stream(&str);
+
+        int index;
+        stream >> index;
+        QString message = stream.readAll().mid(1);
+
+        Chat* chat = m_chatList.at(index);
+        auto job = chat->sendMessage(message);
+        connect(job, &SendMessageJob::done, [](SendMessageJob* job) {
+            Q_UNUSED(job);
+        });
+    }
         /*
         if (input == "showContactList") {
             QMetaObject::invokeMethod(m_interface, "showContactListInvoked", Qt::QueuedConnection);
