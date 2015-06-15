@@ -67,6 +67,6 @@ void ChatListJob::slotChatListChanged()
         d->m_chatList << chat;
     }
 
-    Q_EMIT done();
+    Q_EMIT done(this);
     deleteLater();
 }

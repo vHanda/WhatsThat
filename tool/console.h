@@ -20,24 +20,28 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include <QObject>
+#include <QThread>
 
 #include "interface.h"
 #include "chatlistjob.h"
 #include "sendmessagejob.h"
 #include "chat.h"
 
-class Console : public QObject
+class Console : public QThread
 {
     Q_OBJECT
 public:
     Console(WhatsThat::Interface* interface, QObject* parent = 0);
 
 public Q_SLOTS:
-    void startLoop();
+    void run();
+
+private Q_SLOTS:
+    void handleCommand(const QByteArray& command);
 
 private:
     WhatsThat::Interface* m_interface;
+    QList<WhatsThat::Chat*> m_chatList;
 };
 
 #endif // CONSOLE_H

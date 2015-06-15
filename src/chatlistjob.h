@@ -38,7 +38,7 @@ public:
     QList<Chat*> chatList() const;
 
 Q_SIGNALS:
-    void done();
+    void done(ChatListJob* job);
 
 private Q_SLOTS:
     void slotChatListChanged();

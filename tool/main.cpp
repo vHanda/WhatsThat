@@ -20,7 +20,6 @@
  */
 
 #include <QApplication>
-#include <QThread>
 #include <QTimer>
 
 // FIXME: Fix include directory path
@@ -38,10 +37,7 @@ int main(int argc, char* argv[])
     WhatsThat::Interface interface;
 
     Console console(&interface);
-    console.moveToThread(&thread);
-
-    QTimer::singleShot(0, &console, SLOT(startLoop()));
-    //QObject::connect(&interface, SIGNAL(loaded()), &console, SLOT(startLoop()));
+    console.start();
 
     return app.exec();
 }

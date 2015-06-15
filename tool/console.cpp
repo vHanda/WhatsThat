@@ -30,11 +30,12 @@ extern "C" {
 #include <iostream>
 #include <stdio.h>
 
+using namespace WhatsThat;
+
 Console::Console(WhatsThat::Interface* interface, QObject* parent)
-    : QObject(parent)
+    : QThread(parent)
     , m_interface(interface)
 {
-    using namespace WhatsThat;
     connect(interface, &Interface::loaded, [&]() {
         QTextStream stream(stdout);
         stream << "Loaded\r\n";
@@ -75,7 +76,7 @@ Console::Console(WhatsThat::Interface* interface, QObject* parent)
     */
 }
 
-void Console::startLoop()
+void Console::run()
 {
     char* line = 0;
 
@@ -88,19 +89,41 @@ void Console::startLoop()
 
         linenoiseHistoryAdd(input.constData());
 
-        if (input == "show") {
-            QMetaObject::invokeMethod(m_interface, "show", Qt::QueuedConnection);
-            continue;
-        }
-        if (input == "hide") {
-            QMetaObject::invokeMethod(m_interface, "hide", Qt::QueuedConnection);
-            continue;
-        }
         if (input == "quit") {
             QMetaObject::invokeMethod(QCoreApplication::instance(), "quit", Qt::QueuedConnection);
+            qDebug() << "R\r";
             return;
         }
 
+        QMetaObject::invokeMethod(this, "handleCommand", Qt::QueuedConnection, Q_ARG(QByteArray, input));
+    }
+}
+void Console::handleCommand(const QByteArray& input)
+{
+    QTextStream stream(stdout);
+
+    if (input == "show") {
+        QMetaObject::invokeMethod(m_interface, "show", Qt::QueuedConnection);
+        return;
+    }
+    if (input == "hide") {
+        QMetaObject::invokeMethod(m_interface, "hide", Qt::QueuedConnection);
+        return;
+    }
+
+    if (input == "chatList") {
+        auto job = m_interface->generateChatList();
+        connect(job, &ChatListJob::done, [this](ChatListJob* listJob) {
+            m_chatList = listJob->chatList();
+            qDebug() << "LALALA" << m_chatList.size();
+
+            QTextStream stream(stdout);
+            for (int i = 0; i < m_chatList.size(); i++) {
+                stream << "[" << i << "] " << m_chatList[i]->title() << "\r\n";
+            }
+        });
+        return;
+    }
         /*
         if (input == "showContactList") {
             QMetaObject::invokeMethod(m_interface, "showContactListInvoked", Qt::QueuedConnection);
@@ -130,6 +153,6 @@ void Console::startLoop()
             qDebug() << "Unknown command\r";
         }
         */
-    }
 }
+
 
