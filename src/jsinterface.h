@@ -59,6 +59,8 @@ Q_SIGNALS:
     void sendMessage(const QString& message);
     void keyboardEventInjected();
 
+    void changeCurrentChat(const QString& chatId);
+
     // Called by JS to inform us
     void loaded();
     void authRequired(const QString& imgSrc);

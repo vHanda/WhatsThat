@@ -39,6 +39,7 @@ Q_SIGNALS:
     void done(SendMessageJob* job);
 
 private Q_SLOTS:
+    void slotCurrentChatChanged();
     void slotMessageListChanged();
 
 private:

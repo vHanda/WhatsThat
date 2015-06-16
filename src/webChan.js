@@ -15,8 +15,10 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
         whatsAppInterface.chatList = chats;
     });
 
-    whatsAppInterface.currentChatChanged.connect(function() {
-        selectChat(whatsAppInterface.currentChat)
+    whatsAppInterface.changeCurrentChat.connect(function(chatId) {
+        selectChat(chatId, function() {
+            whatsAppInterface.setCurrentChat(chatId);
+        });
     });
 
     whatsAppInterface.populateMessageList.connect(function() {
@@ -142,10 +144,25 @@ function currentActiveChat() {
     return $(".chat.active").attr("data-reactid");
 }
 
-function selectChat(chatId) {
+/**
+ * Change the current chat to the chat with id \p chatId
+ *
+ * \arg cb This callback function will be called when the currentChat
+ *         has been changed
+ */
+function selectChat(chatId, cb) {
     if (currentActiveChat() == chatId) {
+        cb();
         return;
     }
+    var chatlist = $(".chatlist");
+    chatlist.on("DOMNodeInserted DOMNodeRemoved", function() {
+        if (currentActiveChat() == chatId) {
+            chatlist.off("DOMNodeInserted DOMNodeRemoved");
+            cb();
+            return;
+        }
+    });
     var chat = $("[data-reactid='" + chatId + "']");
     chat.click();
 }

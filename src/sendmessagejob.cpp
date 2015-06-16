@@ -35,19 +35,23 @@ SendMessageJob::SendMessageJob(JsInterface* jsInterface, const QString& id, cons
     , d(new Private)
 {
     d->m_jsInterface = jsInterface;
+    d->m_message = message;
 
-    QMetaObject::invokeMethod(d->m_jsInterface, "setCurrentChat", Qt::QueuedConnection, Q_ARG(QString, id));
-    // FIXME: We Need to know when it has loaded?
-
-    QMetaObject::invokeMethod(d->m_jsInterface, "sendMessage", Qt::QueuedConnection, Q_ARG(QString, message));
-
-    // FIXME: Monitor the messageList changed signal?
-    QTimer::singleShot(1000, this, SLOT(slotMessageListChanged()));
+    connect(d->m_jsInterface, &JsInterface::currentChatChanged, this, &SendMessageJob::slotCurrentChatChanged);
+    QMetaObject::invokeMethod(d->m_jsInterface, "changeCurrentChat", Qt::QueuedConnection, Q_ARG(QString, id));
 }
 
 SendMessageJob::~SendMessageJob()
 {
     delete d;
+}
+
+void SendMessageJob::slotCurrentChatChanged()
+{
+    QMetaObject::invokeMethod(d->m_jsInterface, "sendMessage", Qt::QueuedConnection, Q_ARG(QString, d->m_message));
+
+    // FIXME: Monitor the messageList changed signal?
+    QTimer::singleShot(1000, this, SLOT(slotMessageListChanged()));
 }
 
 void SendMessageJob::slotMessageListChanged()
