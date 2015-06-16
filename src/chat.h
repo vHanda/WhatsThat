@@ -23,6 +23,7 @@
 #include "whatsthat_export.h"
 #include <QObject>
 #include <QDateTime>
+#include <QUrl>
 
 namespace WhatsThat {
 
@@ -37,6 +38,7 @@ public:
     ~Chat();
 
     QString title() const;
+    QUrl avatar() const;
 
     SendMessageJob* sendMessage(const QString& message);
 
@@ -46,7 +48,7 @@ Q_SIGNALS:
     void messageReceived(const QString& senderId, const QDateTime& dt, const QString& message);
 
 private:
-    Chat(JsInterface* jsInterface, const QString& title, const QString& id, QObject* parent = 0);
+    Chat(JsInterface* jsInterface, const QString& title, const QString& id, const QUrl& avatarUrl, QObject* parent = 0);
     Chat(const Chat& rhs) = delete;
     Chat& operator=(const Chat& rhs) = delete;
 

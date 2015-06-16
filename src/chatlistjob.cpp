@@ -23,6 +23,7 @@
 #include "jsinterface.h"
 
 #include <QMetaObject>
+#include <QUrl>
 
 using namespace WhatsThat;
 
@@ -61,9 +62,10 @@ void ChatListJob::slotChatListChanged()
         QVariantMap map = list[i].toMap();
 
         QString title = map.value("title").toString();
+        QUrl avatar = map.value("avatar").toUrl();
         QString id = map.value("id").toString();
 
-        Chat* chat = new Chat(d->m_jsInterface, title, id);
+        Chat* chat = new Chat(d->m_jsInterface, title, id, avatar, this);
         d->m_chatList << chat;
     }
 

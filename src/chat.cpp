@@ -28,15 +28,18 @@ public:
     JsInterface* m_jsInterface;
     QString m_title;
     QString m_id;
+    QUrl m_avatar;
 };
 
-Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id, QObject* parent)
+Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id,
+           const QUrl& avatarUrl, QObject* parent)
     : QObject(parent)
     , d(new Private)
 {
     d->m_jsInterface = jsInterface;
     d->m_title = title;
     d->m_id = id;
+    d->m_avatar = avatarUrl;
 }
 
 Chat::~Chat()
@@ -47,6 +50,11 @@ Chat::~Chat()
 QString Chat::title() const
 {
     return d->m_title;
+}
+
+QUrl Chat::avatar() const
+{
+    return d->m_avatar;
 }
 
 SendMessageJob* Chat::sendMessage(const QString& message)
