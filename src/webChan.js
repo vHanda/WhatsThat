@@ -138,7 +138,14 @@ function activeChats() {
     return chats;
 }
 
+function currentActiveChat() {
+    return $(".chat.active").attr("data-reactid");
+}
+
 function selectChat(chatId) {
+    if (currentActiveChat() == chatId) {
+        return;
+    }
     var chat = $("[data-reactid='" + chatId + "']");
     chat.click();
 }
