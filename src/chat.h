@@ -27,6 +27,7 @@
 
 namespace WhatsThat {
 
+class Message;
 class ChatListJob;
 class SendMessageJob;
 class JsInterface;
@@ -40,12 +41,10 @@ public:
     QString title() const;
     QUrl avatar() const;
 
-    SendMessageJob* sendMessage(const QString& message);
+    SendMessageJob* sendMessage(const Message& message);
 
 Q_SIGNALS:
-    // FIXME: Create a proper Message class.
-    //        A message can be a voice note / image / video / emoticon / etc
-    void messageReceived(const QString& senderId, const QDateTime& dt, const QString& message);
+    void messageReceived(const QString& senderId, const Message& message);
 
 private:
     Chat(JsInterface* jsInterface, const QString& title, const QString& id, const QUrl& avatarUrl, QObject* parent = 0);

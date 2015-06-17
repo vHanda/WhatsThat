@@ -27,6 +27,7 @@ namespace WhatsThat {
 
 class JsInterface;
 class Chat;
+class Message;
 
 class WHATSTHAT_EXPORT SendMessageJob : public QObject
 {
@@ -43,7 +44,7 @@ private Q_SLOTS:
     void slotMessageListChanged();
 
 private:
-    SendMessageJob(JsInterface* jsInterface, const QString& id, const QString& message, QObject* parent = 0);
+    SendMessageJob(JsInterface* jsInterface, const QString& id, const Message& msg, QObject* parent = 0);
     SendMessageJob(const SendMessageJob& rhs) = delete;
     SendMessageJob& operator=(const SendMessageJob& rhs) = delete;
 

@@ -20,6 +20,7 @@
 #include "chat.h"
 #include "jsinterface.h"
 #include "sendmessagejob.h"
+#include "message.h"
 
 using namespace WhatsThat;
 
@@ -57,7 +58,7 @@ QUrl Chat::avatar() const
     return d->m_avatar;
 }
 
-SendMessageJob* Chat::sendMessage(const QString& message)
+SendMessageJob* Chat::sendMessage(const Message& message)
 {
     return new SendMessageJob(d->m_jsInterface, d->m_id, message, this);
 }

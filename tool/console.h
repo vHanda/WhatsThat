@@ -26,6 +26,7 @@
 #include "chatlistjob.h"
 #include "sendmessagejob.h"
 #include "chat.h"
+#include "message.h"
 
 class Console : public QThread
 {

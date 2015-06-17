@@ -18,6 +18,7 @@
  */
 
 #include "sendmessagejob.h"
+#include "message.h"
 #include "jsinterface.h"
 
 #include <QTimer>
@@ -26,16 +27,16 @@ using namespace WhatsThat;
 
 class SendMessageJob::Private {
 public:
-    QString m_message;
     JsInterface* m_jsInterface;
+    Message m_msg;
 };
 
-SendMessageJob::SendMessageJob(JsInterface* jsInterface, const QString& id, const QString& message, QObject* parent)
+SendMessageJob::SendMessageJob(JsInterface* jsInterface, const QString& id, const Message& msg, QObject* parent)
     : QObject(parent)
     , d(new Private)
 {
     d->m_jsInterface = jsInterface;
-    d->m_message = message;
+    d->m_msg = msg;
 
     connect(d->m_jsInterface, &JsInterface::currentChatChanged, this, &SendMessageJob::slotCurrentChatChanged);
     QMetaObject::invokeMethod(d->m_jsInterface, "changeCurrentChat", Qt::QueuedConnection, Q_ARG(QString, id));
@@ -48,7 +49,8 @@ SendMessageJob::~SendMessageJob()
 
 void SendMessageJob::slotCurrentChatChanged()
 {
-    QMetaObject::invokeMethod(d->m_jsInterface, "sendMessage", Qt::QueuedConnection, Q_ARG(QString, d->m_message));
+    const QString text = d->m_msg.text();
+    QMetaObject::invokeMethod(d->m_jsInterface, "sendMessage", Qt::QueuedConnection, Q_ARG(QString, text));
 
     // FIXME: Monitor the messageList changed signal?
     QTimer::singleShot(1000, this, SLOT(slotMessageListChanged()));

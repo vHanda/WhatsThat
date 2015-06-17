@@ -2,6 +2,7 @@ set(WHATSTHAT_LIB_SRCS
     interface.cpp
     chatlistjob.cpp
     chat.cpp
+    message.cpp
     sendmessagejob.cpp
 
     jsinterface.cpp

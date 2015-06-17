@@ -91,7 +91,6 @@ void Console::run()
 
         if (input == "quit") {
             QMetaObject::invokeMethod(QCoreApplication::instance(), "quit", Qt::QueuedConnection);
-            qDebug() << "R\r";
             return;
         }
 
@@ -115,7 +114,6 @@ void Console::handleCommand(const QByteArray& input)
         auto job = m_interface->generateChatList();
         connect(job, &ChatListJob::done, [this](ChatListJob* listJob) {
             m_chatList = listJob->chatList();
-            qDebug() << "LALALA" << m_chatList.size();
 
             QTextStream stream(stdout);
             for (int i = 0; i < m_chatList.size(); i++) {
@@ -131,10 +129,11 @@ void Console::handleCommand(const QByteArray& input)
 
         int index;
         stream >> index;
-        QString message = stream.readAll().mid(1);
+        QString text = stream.readAll().mid(1);
 
         Chat* chat = m_chatList.at(index);
-        auto job = chat->sendMessage(message);
+        Message msg = Message::createTextMessage(text);
+        auto job = chat->sendMessage(msg);
         connect(job, &SendMessageJob::done, [](SendMessageJob* job) {
             Q_UNUSED(job);
         });
