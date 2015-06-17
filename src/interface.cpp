@@ -81,7 +81,13 @@ WhatsThat::Interface::Interface(QObject* parent)
     d->m_view = new QWebEngineView();
     d->m_view->setPage(d->m_page);
     d->m_view->load(QUrl("https://web.whatsapp.com"));
+    d->m_view->show();
 
+    connect(d->m_view, &QWebEngineView::loadStarted, [&](){
+        // The view needs to be shown once, otherwise injecting keyboard events
+        // cause a segfault
+        d->m_view->hide();
+    });
     connect(d->m_view, &QWebEngineView::loadFinished, [&](bool) {
         d->m_page->runJavaScriptFile(":/qtwebchannel/qwebchannel.js");
         d->m_page->runJavaScriptFile(QStandardPaths::locate(QStandardPaths::GenericDataLocation, "whatsthat/jquery.js"));
