@@ -65,7 +65,7 @@ void ChatListJob::slotChatListChanged()
         QUrl avatar = map.value("avatar").toUrl();
         QString id = map.value("id").toString();
 
-        Chat* chat = new Chat(d->m_jsInterface, title, id, avatar, this);
+        Chat* chat = new Chat(d->m_jsInterface, title, id, avatar, parent());
         d->m_chatList << chat;
     }
 
