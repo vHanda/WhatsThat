@@ -48,7 +48,8 @@ Q_SIGNALS:
     void messageReceived(Chat* chat, const Message& message);
 
 private Q_SLOTS:
-    void slotRefreshMessages();
+    void slotUnreadMessages(const QString& chatId);
+    void slotFetchMessages();
 
 private:
     Chat(JsInterface* jsInterface, const QString& title, const QString& id, const QUrl& avatarUrl, int unread, QObject* parent = 0);

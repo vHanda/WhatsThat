@@ -24,9 +24,8 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
 
         //
         // FIXME: This doesn't seem like the best place to be doing this!
-        // FIXME: Will this even get called on adding an extra class to an element?
         //
-        var chatList = $(".chat-list");
+        var chatList = $(".chatlist");
         chatList.on("DOMNodeInserted DOMNodeRemoved.chatList", notifyUnreadChats);
     });
 
@@ -193,11 +192,11 @@ function unreadChats() {
  * Change the current chat to the chat with id \p chatId
  *
  * \arg cb This callback function will be called when the currentChat
- *         has been changed
+ *         has been changed. It is not called if the currentChat is already
+ *         equal to \p chatId
  */
 function selectChat(chatId, cb) {
     if (currentActiveChat() == chatId) {
-        cb();
         return;
     }
     var chatlist = $(".chatlist");

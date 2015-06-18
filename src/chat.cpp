@@ -45,7 +45,8 @@ Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id, co
     d->m_avatar = avatarUrl;
     d->m_unreadMessages = unread;
 
-    connect(d->m_jsInterface, &JsInterface::messageListChanged, this, &Chat::slotRefreshMessages);
+    connect(d->m_jsInterface, &JsInterface::messageListChanged, this, &Chat::slotFetchMessages);
+    connect(d->m_jsInterface, &JsInterface::unreadMessages, this, &Chat::slotUnreadMessages);
 }
 
 Chat::~Chat()
@@ -73,7 +74,18 @@ SendMessageJob* Chat::sendMessage(const Message& message)
     return new SendMessageJob(d->m_jsInterface, d->m_id, message, this);
 }
 
-void Chat::slotRefreshMessages()
+void Chat::slotUnreadMessages(const QString& chatId)
+{
+    if (chatId != d->m_id) {
+        return;
+    }
+
+    // FIXME: Need to implement some kind of locking!
+    // so that we do not change the current chat when we are about to send a message!
+    d->m_jsInterface->changeCurrentChat(d->m_id);
+}
+
+void Chat::slotFetchMessages()
 {
     if (d->m_jsInterface->currentChat() != d->m_id) {
         return;
