@@ -22,8 +22,6 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
         var chats = activeChats();
         whatsAppInterface.chatList = chats;
 
-        notifyUnreadChats();
-
         //
         // FIXME: This doesn't seem like the best place to be doing this!
         // FIXME: Will this even get called on adding an extra class to an element?
@@ -161,6 +159,7 @@ function activeChats() {
         var chatObj = {};
         chatObj.title = $("div.chat-title", chatElem).text();
         chatObj.id = chatElem.getAttribute("data-reactid");
+        chatObj.unread = $("span.unread-count", chatElem).text();
 
         var imgElem = $("img.avatar-image", chatElem);
         if (imgElem.length)

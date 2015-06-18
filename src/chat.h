@@ -40,6 +40,7 @@ public:
 
     QString title() const;
     QUrl avatar() const;
+    int unreadMessages() const;
 
     SendMessageJob* sendMessage(const Message& message);
 
@@ -50,7 +51,7 @@ private Q_SLOTS:
     void slotRefreshMessages();
 
 private:
-    Chat(JsInterface* jsInterface, const QString& title, const QString& id, const QUrl& avatarUrl, QObject* parent = 0);
+    Chat(JsInterface* jsInterface, const QString& title, const QString& id, const QUrl& avatarUrl, int unread, QObject* parent = 0);
     Chat(const Chat& rhs) = delete;
     Chat& operator=(const Chat& rhs) = delete;
 

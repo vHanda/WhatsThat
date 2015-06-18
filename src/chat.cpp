@@ -30,12 +30,12 @@ public:
     QString m_title;
     QString m_id;
     QUrl m_avatar;
+    int m_unreadMessages;
 
     QList<Message> m_messages;
 };
 
-Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id,
-           const QUrl& avatarUrl, QObject* parent)
+Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id, const QUrl& avatarUrl, int unread, QObject* parent)
     : QObject(parent)
     , d(new Private)
 {
@@ -43,6 +43,7 @@ Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id,
     d->m_title = title;
     d->m_id = id;
     d->m_avatar = avatarUrl;
+    d->m_unreadMessages = unread;
 
     connect(d->m_jsInterface, &JsInterface::messageListChanged, this, &Chat::slotRefreshMessages);
 }
@@ -60,6 +61,11 @@ QString Chat::title() const
 QUrl Chat::avatar() const
 {
     return d->m_avatar;
+}
+
+int Chat::unreadMessages() const
+{
+    return d->m_unreadMessages;
 }
 
 SendMessageJob* Chat::sendMessage(const Message& message)
