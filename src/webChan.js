@@ -18,7 +18,7 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
     whatsAppInterface.changeCurrentChat.connect(function(chatId) {
         var messageList = $(".message-list");
         if (messageList) {
-            messageList.off("DOMNodeInserted DOMNodeRemoved");
+            messageList.off("DOMNodeInserted DOMNodeRemoved.chat");
         }
 
         selectChat(chatId, function() {
@@ -26,7 +26,7 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
 
             // Hook up signals to monitor the messageList
             var messageList = $(".message-list");
-            messageList.on("DOMNodeInserted DOMNodeRemoved", function() {
+            messageList.on("DOMNodeInserted DOMNodeRemoved.chat", function() {
                 var msgs = fetchMessages();
                 whatsAppInterface.messageList = msgs;
             });
@@ -50,6 +50,9 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
 });
 
 
+//
+// Message Sending
+//
 function setMessage(message) {
     var input = $(".input-container > .input");
     input.append(message);
@@ -168,9 +171,9 @@ function selectChat(chatId, cb) {
         return;
     }
     var chatlist = $(".chatlist");
-    chatlist.on("DOMNodeInserted DOMNodeRemoved", function() {
+    chatlist.on("DOMNodeInserted DOMNodeRemoved.selectChat", function() {
         if (currentActiveChat() == chatId) {
-            chatlist.off("DOMNodeInserted DOMNodeRemoved");
+            chatlist.off("DOMNodeInserted DOMNodeRemoved.selectChat");
             cb();
             return;
         }
