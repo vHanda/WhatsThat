@@ -10,9 +10,26 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
         showContactList(whatsAppInterface.hideContactListCallback);
     });
 
+    var notifyUnreadChats = function() {
+        var chats = unreadChats();
+        for (var i = 0; i < chats.length; i++) {
+            var id = chats[i];
+            whatsAppInterface.jsEmitUnreadMessage(id);
+        }
+    };
+
     whatsAppInterface.populateChatList.connect(function() {
         var chats = activeChats();
         whatsAppInterface.chatList = chats;
+
+        notifyUnreadChats();
+
+        //
+        // FIXME: This doesn't seem like the best place to be doing this!
+        // FIXME: Will this even get called on adding an extra class to an element?
+        //
+        var chatList = $(".chat-list");
+        chatList.on("DOMNodeInserted DOMNodeRemoved.chatList", notifyUnreadChats);
     });
 
     whatsAppInterface.changeCurrentChat.connect(function(chatId) {
@@ -157,6 +174,20 @@ function activeChats() {
 
 function currentActiveChat() {
     return $(".chat.active").attr("data-reactid");
+}
+
+function unreadChats() {
+    var uChats = $(".chat.unread");
+    var chats = [];
+    for (var i = 0; i < uChats.length; i++) {
+        var chatElem = uChats[i];
+        var attr = chatElem.getAttribute("data-reactid");
+        if (attr) {
+            chats.push(attr);
+        }
+    }
+
+    return chats;
 }
 
 /**

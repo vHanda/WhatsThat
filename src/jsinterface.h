@@ -70,6 +70,7 @@ Q_SIGNALS:
     void chatListChanged();
     void currentChatChanged();
     void messageListChanged();
+    void unreadMessages(const QString& chatId);
 
 public Q_SLOTS:
     void showContactListCallback();
@@ -81,6 +82,7 @@ public Q_SLOTS:
     void emitAuthRequired(const QString& imgSrc);
 
     void jsInjectKeyboardEvent();
+    void jsEmitUnreadMessage(const QString& chatId);
 
 private:
     QVariantList m_contactList;

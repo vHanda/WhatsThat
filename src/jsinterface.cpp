@@ -86,3 +86,8 @@ void JsInterface::emitAuthRequired(const QString& imgSrc)
     Q_EMIT authRequired(imgSrc);
 }
 
+void JsInterface::jsEmitUnreadMessage(const QString& chatId)
+{
+    Q_EMIT unreadMessages(chatId);
+}
+
