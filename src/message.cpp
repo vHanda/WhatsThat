@@ -24,6 +24,8 @@ using namespace WhatsThat;
 class Message::Private {
 public:
     QString m_text;
+    QDateTime m_dateTime;
+    QString m_author;
 };
 
 Message::Message()
@@ -50,7 +52,7 @@ Message& Message::operator=(const Message& rhs)
 
 bool Message::operator==(const Message& rhs) const
 {
-    return d->m_text == rhs.d->m_text;
+    return d->m_text == rhs.d->m_text && d->m_author == rhs.d->m_author && d->m_dateTime == rhs.d->m_dateTime;
 }
 
 QString Message::text() const
@@ -58,11 +60,31 @@ QString Message::text() const
     return d->m_text;
 }
 
+QString Message::author() const
+{
+    return d->m_author;
+}
+
+QDateTime Message::dateTime() const
+{
+    return d->m_dateTime;
+}
+
 // static
 Message Message::createTextMessage(const QString& text)
 {
     Message msg;
     msg.d->m_text = text;
+
+    return msg;
+}
+
+Message Message::createTextMessage(const QString& text, const QDateTime& dt, const QString& author)
+{
+    Message msg;
+    msg.d->m_text = text;
+    msg.d->m_dateTime = dt;
+    msg.d->m_author = author;
 
     return msg;
 }

@@ -16,8 +16,20 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
     });
 
     whatsAppInterface.changeCurrentChat.connect(function(chatId) {
+        var messageList = $(".message-list");
+        if (messageList) {
+            messageList.off("DOMNodeInserted DOMNodeRemoved");
+        }
+
         selectChat(chatId, function() {
             whatsAppInterface.setCurrentChat(chatId);
+
+            // Hook up signals to monitor the messageList
+            var messageList = $(".message-list");
+            messageList.on("DOMNodeInserted DOMNodeRemoved", function() {
+                var msgs = fetchMessages();
+                whatsAppInterface.messageList = msgs;
+            });
         });
     });
 

@@ -30,6 +30,8 @@ public:
     QString m_title;
     QString m_id;
     QUrl m_avatar;
+
+    QList<Message> m_messages;
 };
 
 Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id,
@@ -41,6 +43,8 @@ Chat::Chat(JsInterface* jsInterface, const QString& title, const QString& id,
     d->m_title = title;
     d->m_id = id;
     d->m_avatar = avatarUrl;
+
+    connect(d->m_jsInterface, &JsInterface::messageListChanged, this, &Chat::slotRefreshMessages);
 }
 
 Chat::~Chat()
@@ -63,3 +67,37 @@ SendMessageJob* Chat::sendMessage(const Message& message)
     return new SendMessageJob(d->m_jsInterface, d->m_id, message, this);
 }
 
+void Chat::slotRefreshMessages()
+{
+    if (d->m_jsInterface->currentChat() != d->m_id) {
+        return;
+    }
+
+    QList<Message> messages;
+    QVariantList list = d->m_jsInterface->messageList().toList();
+    for (const QVariant& var : list) {
+        QVariantMap map = var.toMap();
+
+        // FIXME: Fetch the datetime properly!
+        QDateTime dt;
+        QString date = map.value("date").toString();
+        QString time = map.value("time").toString();
+        QString author = map.value("author").toString();
+        QString text = map.value("text").toString();
+
+        Message msg = Message::createTextMessage(text, dt, author);
+        messages << msg;
+    }
+
+    if (messages == d->m_messages) {
+        return;
+    }
+
+    for (const Message& msg : messages) {
+        if (!d->m_messages.contains(msg)) {
+            Q_EMIT messageReceived(this, msg);
+        }
+    }
+
+    d->m_messages = messages;
+}

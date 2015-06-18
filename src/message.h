@@ -22,6 +22,7 @@
 
 #include "whatsthat_export.h"
 #include <QString>
+#include <QDateTime>
 
 namespace WhatsThat {
 
@@ -36,9 +37,13 @@ public:
     bool operator==(const Message& rhs) const;
 
     QString text() const;
+    QDateTime dateTime() const;
+
+    // FIXME: Having the author be a QString is strange. We need to map it to contacts!
+    QString author() const;
 
     static Message createTextMessage(const QString& text);
-
+    static Message createTextMessage(const QString& text, const QDateTime& dt, const QString& author);
 private:
     class Private;
     Private* d;

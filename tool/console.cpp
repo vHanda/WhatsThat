@@ -117,7 +117,13 @@ void Console::handleCommand(const QByteArray& input)
 
             QTextStream stream(stdout);
             for (int i = 0; i < m_chatList.size(); i++) {
-                stream << "[" << i << "] " << m_chatList[i]->title() << "\r\n";
+                Chat* chat = m_chatList.at(i);
+                stream << "[" << i << "] " << chat->title() << "\r\n";
+
+                connect(chat, &Chat::messageReceived, [](Chat* chat, const Message& msg) {
+                    QTextStream stream(stdout);
+                    stream << "Received [Chat: " << chat->title() << "] [From: " << msg.author() << "] " << msg.text() << "\r\n";
+                });
             }
         });
         return;

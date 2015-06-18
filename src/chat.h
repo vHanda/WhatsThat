@@ -44,7 +44,10 @@ public:
     SendMessageJob* sendMessage(const Message& message);
 
 Q_SIGNALS:
-    void messageReceived(const QString& senderId, const Message& message);
+    void messageReceived(Chat* chat, const Message& message);
+
+private Q_SLOTS:
+    void slotRefreshMessages();
 
 private:
     Chat(JsInterface* jsInterface, const QString& title, const QString& id, const QUrl& avatarUrl, QObject* parent = 0);
