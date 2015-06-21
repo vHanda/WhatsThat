@@ -122,7 +122,9 @@ void Console::handleCommand(const QByteArray& input)
 
                 connect(chat, &Chat::messageReceived, [](Chat* chat, const Message& msg) {
                     QTextStream stream(stdout);
-                    stream << "Received [Chat: " << chat->title() << "] [From: " << msg.author() << "] " << msg.text() << "\r\n";
+                    stream << "Received [Chat: " << chat->title() << "] ["
+                           << msg.dateTime().toString(Qt::ISODate) << " " << msg.author() << "] "
+                           << msg.text() << "\r\n";
                 });
             }
         });

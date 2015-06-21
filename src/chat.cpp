@@ -96,10 +96,7 @@ void Chat::slotFetchMessages()
     for (const QVariant& var : list) {
         QVariantMap map = var.toMap();
 
-        // FIXME: Fetch the datetime properly!
-        QDateTime dt;
-        QString date = map.value("date").toString();
-        QString time = map.value("time").toString();
+        QDateTime dt = map.value("dateTime").toDateTime();
         QString author = map.value("author").toString();
         QString text = map.value("text").toString();
 

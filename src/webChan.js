@@ -132,8 +132,7 @@ function fetchMessages() {
                 continue;
             }
             var message = {};
-            message.date = match[1];
-            message.time = match[2];
+            message.dateTime = new Date(match[1] + " " + match[2])
             message.author = match[3];
             message.text = match[4];
 
