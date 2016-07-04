@@ -22,6 +22,8 @@
 #include "sendmessagejob.h"
 #include "message.h"
 
+#include <QDebug>
+
 using namespace WhatsThat;
 
 class Chat::Private {

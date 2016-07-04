@@ -32,7 +32,7 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
     whatsAppInterface.changeCurrentChat.connect(function(chatId) {
         var messageList = $(".message-list");
         if (messageList) {
-            messageList.off("DOMNodeInserted DOMNodeRemoved.chat");
+            messageList.off("DOMNodeInserted DOMNodeRemoved");
         }
 
         selectChat(chatId, function() {
@@ -40,7 +40,7 @@ new QWebChannel(qt.webChannelTransport, function(channel) {
 
             // Hook up signals to monitor the messageList
             var messageList = $(".message-list");
-            messageList.on("DOMNodeInserted DOMNodeRemoved.chat", function() {
+            messageList.on("DOMNodeInserted DOMNodeRemoved", function() {
                 var msgs = fetchMessages();
                 whatsAppInterface.messageList = msgs;
             });
@@ -100,7 +100,7 @@ function showContactList(callBack) {
 
     var leftDrawer = $("body > div > div.app.two > div:nth-child(2) > span:nth-child(1)").first();
     // Better CSS selector: div.app.two > div[data-reactid] > span[data-reactid*='1.1']
-    leftDrawer.on("DOMNodeInsert", callBack);
+    leftDrawer.on("DOMNodeInserted", callBack);
 }
 
 function hideContactList(callBack) {
@@ -137,6 +137,37 @@ function fetchMessages() {
             message.text = match[4];
 
             messages.push(message);
+        }
+
+        var img = $("img.image-thumb-body", msgElem);
+        if (img.length) {
+            var message = {};
+
+            var imgSrc = img.attr("src");
+            if (imgSrc.length) {
+                message.imgUrl = imgSrc;
+            }
+            console.log(img.text());
+
+            var imgCaption = $(".image-caption", msgElem);
+            if (imgCaption.length) {
+                message.imgCaption = imgCaption.text();
+            }
+            console.log(message);
+
+            // Get Time
+            var time = $("span.message-datetime", msgElem);
+
+            // Check if contains div.message.message-in
+            //                   div.message.message-out
+            //                   div.message.message-system
+            // Assign author using that!
+
+            // Group texts
+            // message-author
+            //   .number
+            //   .screen-name
+
         }
     }
 
